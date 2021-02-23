@@ -1,12 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import GlobalStyle from './styles/global';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <>
+    <GlobalStyle />
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" exact={true} component={Login} />
+        <Route path="/dashboard" exact={true} component={Dashboard} />
+      </Switch>
+    </BrowserRouter>
+  </>,
   document.getElementById('root')
 );
 
