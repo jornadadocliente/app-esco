@@ -1,8 +1,60 @@
+import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+import axios from 'axios'
+import { createServer } from 'miragejs'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify'
 
 import LogoImg from '../images/logo_esco.png'
 
+// Mock API
+let server = createServer()
+server.post('/api/login', (schema, request) => {
+  let attrs = JSON.parse(request.requestBody)
+  console.log(attrs)
+
+  return {
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  }
+})
+
 function Login() {
+  const history = useHistory()
+
+  const [email, setEmail] = useState("")
+  const [senha, setSenha] = useState("")
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    if (email !== "" && senha !== "") {
+      const data = {
+        email,
+        senha
+      }
+      axios.post('/api/login', {
+        data
+      })
+      .then(response => {
+        window.localStorage.setItem('token', response.data.token)
+        toast.info('Bem-Vindo!', {
+          autoClose: 5000
+        })
+        history.push("/dashboard")
+      })
+      .catch(error => {
+        console.log(error)
+        toast.info('Erro ao se conectar com o servidor!', {
+          autoClose: 5000
+        })
+      })
+    } else {
+      toast.info('Preencha os campos corretamente!', {
+        autoClose: 5000
+      })
+    }
+  }
+
   return (
     <Body>
       <div className="container">
@@ -14,11 +66,25 @@ function Login() {
             <h2>
               Faça seu login.
             </h2>
-            <form>
-              <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" placeholder="Digite seu e-mail Esco" />
-              <label for="password">Senha</label>
-              <input type="password" id="password" name="password" placeholder="Digite sua senha" />
+            <form onSubmit={ event => handleSubmit(event) }>
+              <label htmlFor="email">E-mail</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="Digite seu e-mail Esco" 
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+              <label htmlFor="password">Senha</label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Digite sua senha" 
+                value={senha}
+                onChange={(event) => setSenha(event.target.value)}
+              />
 
               <button type="submit" >
                 ENTRAR
@@ -27,6 +93,12 @@ function Login() {
           </LoginCard>
         </div>
       </div>
+
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        pauseOnHover
+      />
     </Body>
   );
 }
