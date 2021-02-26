@@ -60,7 +60,7 @@ function Login() {
       <div className="container">
         <div className="row">
           <Logo>
-            <img src={LogoImg} alt="Esco" />
+            <img src={LogoImg} alt="Esco" width={250} height={ 154 } />
           </Logo>
           <LoginCard>
             <h2>
