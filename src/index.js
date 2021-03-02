@@ -5,9 +5,11 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import GlobalStyle from './styles/global';
 
+
 // Views
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import CadastroDeUsuario from './pages/Cadastro-de-usuario';
 
 ReactDOM.render(
   <>
@@ -16,6 +18,7 @@ ReactDOM.render(
       <Switch>
         <Route path="/" exact={true} component={Login} />
         <Route path="/dashboard" exact={true} component={Dashboard} />
+        <Route path="/cadastro-de-usuario" exact={true} component={CadastroDeUsuario} />
       </Switch>
     </BrowserRouter>
   </>,

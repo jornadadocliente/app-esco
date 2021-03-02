@@ -3,19 +3,19 @@ import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
 
-function Dashboard() {
+
+function CadastroDeUsuario() {
   return (
     <div className="row">
       <Drawer />
       <Header />
-        
+
       <Container className="container">
-        <h1>Tela de Dashboard</h1>
-        <Link to="/">
-          Go to Login
+        <h1>Tela de Cadastro De Usuario</h1>
+        <Link to="/dashboard">
+          Go to Dashboard
         </Link>
       </Container>
-
     </div>
   );
 }
@@ -25,4 +25,4 @@ const Container = styled.div`
   margin-top: 72px;
 `
 
-export default Dashboard;
+export default CadastroDeUsuario;

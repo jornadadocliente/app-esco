@@ -9,6 +9,7 @@ import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
 import LanguageIcon from '@material-ui/icons/Language';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 import LogoBranco from '../images/logo_branco.svg'
 import PerfilFoto from '../images/perfil-imagem.png'
@@ -100,8 +101,8 @@ const Drawer = (props) => {
           <AccountBalanceWalletOutlinedIcon />
           Orçamentos
         </NavLink>
-        <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')} disabled={!open}>
-          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+        <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')} disabled={!open}>
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
             <LanguageIcon />
             Produtos
           </AccordionSummary>
@@ -123,6 +124,20 @@ const Drawer = (props) => {
             </NavLink>
           </AccordionDetails>
         </Accordion>
+        <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')} disabled={!open}>
+          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+            <SupervisorAccountIcon />
+            Admin
+          </AccordionSummary>
+          <AccordionDetails>
+            <NavLink exact to="/">
+              Usuários
+            </NavLink>
+            <NavLink exact to="/cadastro-de-usuario">
+              Cadastro de Usuário
+            </NavLink>
+          </AccordionDetails>
+        </Accordion>
         <Exit className={ open ? "opened" : ""} onClick={() => logout()} >
           <img src={ ExitIcon } width={ 18 } height={ 16 } alt="" />
           Sair
@@ -138,10 +153,12 @@ const Container = styled.div`
   top: 0;
   height: 100vh;
   width: 72px;
+  background: #FFF;
   box-shadow: -60px 0px 40px 40px #333;
   transition: width 0.5s;
   overflow-y: auto;
   padding-bottom: 72px;
+  z-index: 999;
 
   &.opened {
     width: 200px;
