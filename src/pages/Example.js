@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
 
-function Dashboard() {
+function Example() {
   return (
     <div className="row">
       <Drawer />
       <Header />
         
       <Container className="container">
-        <h1>Tela de Dashboard</h1>
+        <h1>Tela de Example</h1>
         <Link to="/">
           Go to Login
         </Link>
@@ -32,4 +32,4 @@ const Container = styled.div`
   }
 `
 
-export default Dashboard;
+export default Example;

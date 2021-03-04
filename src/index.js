@@ -10,6 +10,7 @@ import GlobalStyle from './styles/global';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CadastroDeUsuario from './pages/Cadastro-de-usuario';
+import ListaDeUsuario from './pages/Listagem-de-usuario';
 
 ReactDOM.render(
   <>
@@ -19,6 +20,7 @@ ReactDOM.render(
         <Route path="/" exact={true} component={Login} />
         <Route path="/dashboard" exact={true} component={Dashboard} />
         <Route path="/cadastro-de-usuario" exact={true} component={CadastroDeUsuario} />
+        <Route path="/lista-de-usuario" exact={true} component={ListaDeUsuario} />
       </Switch>
     </BrowserRouter>
   </>,

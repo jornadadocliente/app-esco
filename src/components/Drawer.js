@@ -130,7 +130,7 @@ const Drawer = (props) => {
             Admin
           </AccordionSummary>
           <AccordionDetails>
-            <NavLink exact to="/">
+            <NavLink exact to="/lista-de-usuario">
               Usuários
             </NavLink>
             <NavLink exact to="/cadastro-de-usuario">
@@ -148,7 +148,7 @@ const Drawer = (props) => {
 }
 
 const Container = styled.div`
-  position: relative;
+  position: sticky;
   left: 0;
   top: 0;
   height: 100vh;
@@ -162,6 +162,10 @@ const Container = styled.div`
 
   &.opened {
     width: 200px;
+  }
+
+  @media screen and (max-width: 800px) {
+    position: fixed;
   }
 `
 
@@ -426,7 +430,7 @@ const Menu = styled.div`
 
 const Exit = styled.div`
   display: flex;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 10px;
   width: 52px;
