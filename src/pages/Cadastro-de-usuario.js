@@ -9,6 +9,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import ReactInputMask from 'react-input-mask';
 
 const CssTextField = withStyles({
   root: {
@@ -92,20 +93,24 @@ function CadastroDeUsuario() {
             value={values.confirm_senha}
             onChange={handleChange}
           />
-          <CssTextField 
-            label="CPF" 
-            variant="outlined" 
-            name="cpf" 
-            value={values.cpf}
-            onChange={handleChange}
-          />
-          <CssTextField 
-            label="Telefone" 
-            variant="outlined" 
-            name="telefone" 
-            value={values.telefone}
-            onChange={handleChange}
-          />
+          <ReactInputMask mask="999.999.999-99" maskChar="" name="cpf" value={values.cpf} onChange={handleChange}>
+            {() => (
+              <CssTextField 
+                type="tel"
+                label="CPF" 
+                variant="outlined" 
+              />
+            )}
+          </ReactInputMask>
+          <ReactInputMask mask="(99) 9 9999-9999" maskChar="" name="telefone" value={values.telefone} onChange={handleChange} >
+            {() => (
+              <CssTextField 
+                type="tel"
+                label="Telefone" 
+                variant="outlined" 
+              />
+            )}
+          </ReactInputMask>
           <CssTextField 
             label="Data de nascimento" 
             variant="outlined" 

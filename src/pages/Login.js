@@ -1,23 +1,12 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import axios from 'axios'
-import { createServer } from 'miragejs'
+import api from '../services/api'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify'
 
 import LogoImg from '../images/logo_esco.png'
 
-// Mock API
-let server = createServer()
-server.post('/api/login', (schema, request) => {
-  let attrs = JSON.parse(request.requestBody)
-  console.log(attrs)
-
-  return {
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-  }
-})
 
 function Login() {
   const history = useHistory()
@@ -30,11 +19,9 @@ function Login() {
     if (email !== "" && senha !== "") {
       const data = {
         email,
-        senha
+        password: senha
       }
-      axios.post('/api/login', {
-        data
-      })
+      api.post('/auth/login', data)
       .then(response => {
         window.localStorage.setItem('token', response.data.token)
         toast.info('Bem-Vindo!', {
