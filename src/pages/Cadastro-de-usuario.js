@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import ReactInputMask from 'react-input-mask';
+import { ToastContainer, toast } from 'react-toastify'
 
 const CssTextField = withStyles({
   root: {
@@ -68,10 +69,15 @@ function CadastroDeUsuario() {
     }
     api.post("/users", data)
     .then(response => {
-      console.log(response)
+      toast.info(`${values.nome}, cadastrado com sucesso!`, {
+        autoClose: 5000
+      })
     })
     .catch(error => {
       console.log(error)
+      toast.info('Erro ao se conectar com o servidor!', {
+        autoClose: 5000
+      })
     })
   }
 
@@ -179,6 +185,12 @@ function CadastroDeUsuario() {
           </button>
         </FormUser>
       </Container>
+
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        pauseOnHover
+      />
     </div>
   );
 }
