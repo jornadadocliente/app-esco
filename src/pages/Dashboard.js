@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
+import api from '../services/api'
+import { ToastContainer, toast } from 'react-toastify'
 
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -10,10 +12,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import TuneIcon from '@material-ui/icons/Tune';
 
-import Bascula from '../images/bascula.png'
-import ChapaDeDesgaste from '../images/chapa-de-desgaste.png'
-import Gets from '../images/gets.png'
-import KwikLok from '../images/kwik-lok.png'
 
 const CssTextField = withStyles({
   root: {
@@ -37,6 +35,21 @@ function Dashboard() {
   const [values, setValues] = useState({
     search_input: null
   })
+  const [categories, setCategories] = useState(null)
+
+  useEffect(() => {
+    api.get('/categories')
+    .then(response => {
+      console.log(response.data.data)
+      setCategories(response.data.data)
+    })
+    .catch(error => {
+      console.log(error)
+      toast.info('Erro ao se conectar com o servidor!', {
+        autoClose: 5000
+      })
+    })
+  }, [])
 
   const handleChange = (event) => {
     setValues({
@@ -73,45 +86,25 @@ function Dashboard() {
         </Filters>
 
         <div className="row">
-          <Categories>
-            <Link to="/">
-              <img src={ Bascula } alt="Báscula" />
-              <h3>Báscula</h3>
-              <button>
-                Ver Mais
-              </button>
-            </Link>
-          </Categories>
-          <Categories>
-            <Link to="/">
-              <img src={ ChapaDeDesgaste } alt="Báscula" />
-              <h3>Chapa de Desgaste</h3>
-              <button>
-                Ver Mais
-              </button>
-            </Link>
-          </Categories>
-          <Categories>
-            <Link to="/">
-              <img src={ Gets } alt="Báscula" />
-              <h3>Gets</h3>
-              <button>
-                Ver Mais
-              </button>
-            </Link>
-          </Categories>
-          <Categories>
-            <Link to="/">
-              <img src={ KwikLok } alt="Báscula" />
-              <h3>Kwik Lok</h3>
-              <button>
-                Ver Mais
-              </button>
-            </Link>
-          </Categories>
+          {categories?.map(item => (
+            <Categories>
+              <Link to={`/produtos/${item.id}`}>
+                <img src={ item.image } alt="item.title" />
+                <h3>{ item.title }</h3>
+                <button>
+                  Ver Mais
+                </button>
+              </Link>
+            </Categories>
+          ))}
         </div>
       </Container>
 
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        pauseOnHover
+      />
     </div>
   );
 }
