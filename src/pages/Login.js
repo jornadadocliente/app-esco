@@ -23,7 +23,7 @@ function Login() {
       }
       api.post('/auth/login', data)
       .then(response => {
-        window.localStorage.setItem('token', response.data.token)
+        window.localStorage.setItem('esco_token', response.data.access_token)
         toast.info('Bem-Vindo!', {
           autoClose: 5000
         })
