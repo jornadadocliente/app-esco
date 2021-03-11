@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CadastroDeUsuario from './pages/Cadastro-de-usuario';
 import ListaDeUsuario from './pages/Listagem-de-usuario';
+import Produtos from './pages/Produtos';
 
 ReactDOM.render(
   <>
@@ -21,6 +22,9 @@ ReactDOM.render(
         <Route path="/dashboard" exact={true} component={Dashboard} />
         <Route path="/cadastro-de-usuario" exact={true} component={CadastroDeUsuario} />
         <Route path="/lista-de-usuario" exact={true} component={ListaDeUsuario} />
+        
+        {/* Rotas de produtos dinâmicas */}
+        <Route path="/produtos/:search" component={Produtos} />
       </Switch>
     </BrowserRouter>
   </>,

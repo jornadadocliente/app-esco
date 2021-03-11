@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, NavLink, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
+import api from "../services/api"
 
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
@@ -55,8 +56,20 @@ const AccordionDetails = withStyles((theme) => ({
 const Drawer = (props) => {
 
   const history = useHistory()
+  const [categories, setCategories] = useState(null)
   const [open, setOpen] = useState(false)
   const [expanded, setExpanded] = useState('panel1');
+
+  useEffect(() => {
+    api.get('/categories')
+    .then(response => {
+      console.log(response.data.data)
+      setCategories(response.data.data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }, [])
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -107,21 +120,11 @@ const Drawer = (props) => {
             Produtos
           </AccordionSummary>
           <AccordionDetails>
-            <NavLink exact to="/">
-              Kwik LOK
-            </NavLink>
-            <NavLink exact to="/">
-              Báscula
-            </NavLink>
-            <NavLink exact to="/">
-              GETS
-            </NavLink>
-            <NavLink exact to="/">
-              Corte de Água
-            </NavLink>
-            <NavLink exact to="/">
-              Chapa de Desgaste
-            </NavLink>
+            {categories?.map(item => (
+              <NavLink exact to={`/produtos/${item.id}`}>
+                {item.title}
+              </NavLink>
+            ))}
           </AccordionDetails>
         </Accordion>
         <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')} disabled={!open}>
@@ -430,7 +433,7 @@ const Menu = styled.div`
 
 const Exit = styled.div`
   display: flex;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 10px;
   width: 52px;

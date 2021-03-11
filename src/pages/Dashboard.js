@@ -88,8 +88,8 @@ function Dashboard() {
         <div className="row">
           {categories?.map(item => (
             <Categories>
-              <Link to={`/produtos/${item.id}`}>
-                <img src={ item.image } alt="item.title" />
+              <Link to={`/produtos/${item.title}`}>
+                <img src={ item.image } alt={item.title} />
                 <h3>{ item.title }</h3>
                 <button>
                   Ver Mais
