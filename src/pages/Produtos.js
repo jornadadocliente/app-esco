@@ -124,6 +124,11 @@ const NavTitle = styled.div`
     font-size: 22px;
     text-transform: uppercase;
   }
+
+  @media screen and (max-width: 760px) {
+    width: calc(100% - 72px);
+    flex-wrap: wrap;
+  }
 `
 
 const ProdutoContent = styled.div`
@@ -134,6 +139,10 @@ const ProdutoContent = styled.div`
   border-left: 1px solid #C4C4C4;
   height: calc(100vh - 72px);
   background-color: #FFF;
+
+  @media screen and (max-width: 760px) {
+    right: -100%;
+  }
 `
 
 const Scroller = styled.div`
@@ -143,6 +152,10 @@ const Scroller = styled.div`
   height: calc(100vh - 144px);
   width: calc(50% - 36px);
   overflow: auto;
+
+  @media screen and (max-width: 760px) {
+    width: calc(100% - 72px);
+  }
 `
 
 const ProdutoCard = styled.div`
@@ -177,6 +190,17 @@ const ProdutoCard = styled.div`
         font-weight: 700;
         font-size: 16px;
         margin: 4px 0;
+      }
+    }
+  }
+
+  @media screen and (max-width: 760px) {
+    height: max-content;
+    a {
+      flex-direction: column;
+      img {
+        width: 100%;
+        height: 100px;
       }
     }
   }

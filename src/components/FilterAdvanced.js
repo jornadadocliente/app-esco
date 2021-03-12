@@ -257,6 +257,17 @@ const ShowFilter = styled.div`
   &:hover {
     background-color: #04345526;
   }
+
+  @media screen and (max-width: 760px) {
+    color: transparent; 
+    overflow: hidden;
+    width: 60px;
+    margin: 0;
+    padding: 2px 16px;
+    svg {
+      color: #043455;
+    }
+  }
 `
 
 const CloseFilter = styled.div`
