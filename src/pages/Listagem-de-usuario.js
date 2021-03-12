@@ -46,8 +46,27 @@ function ListUsers() {
     })
   }, [])
 
-  const handleActive = (event) => {
-    console.log("TO DO: Função para ativar/desativar usuário")
+  const handleActive = (e, id) => {
+    e.preventDefault();
+    let status = ""
+    rows.map(item => {
+      if (item.id === id) {
+        status = item.status
+      }
+      return null
+    })
+    api.patch(`/user/${id}`, {
+      status: status === "ativo" ? 0 : 1
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+      toast.info('Erro ao se conectar com o servidor!', {
+        autoClose: 5000
+      })
+    })
   }
 
   return (
@@ -74,9 +93,9 @@ function ListUsers() {
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.birth}</TableCell>
                   <TableCell>{row.phone}</TableCell>
-                  <TableCell>{row.type}</TableCell>
+                  <TableCell style={{ textTransform: "capitalize" }}>{row.type}</TableCell>
                   <TableCell>
-                    <button onClick={ handleActive } className={row.status} >
+                    <button onClick={ e => handleActive(e, row.id) } className={row.status} >
                       {row.status}
                     </button>
                   </TableCell>

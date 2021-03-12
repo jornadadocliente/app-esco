@@ -6,6 +6,8 @@ import FilterAdvanced from '../components/FilterAdvanced'
 
 // Imagens
 import ProdutoImage from '../images/gets.png'
+import EscavadeiraIcon from '../images/escavadeira-icon.svg'
+import MinaIcon from '../images/mina-icon.svg'
 
 function Produtos() {
   const { search } = useParams()
@@ -27,7 +29,7 @@ function Produtos() {
 
         <Scroller>
           <ProdutoCard>
-            <Link to="/">
+            <div to="/">
               <img src={ProdutoImage} alt="Nemesys" />
               <div className="content">
                 <p>Gets</p>
@@ -37,10 +39,10 @@ function Produtos() {
                   10% menos força ao penetrar.
                 </p>
               </div>
-            </Link>
+            </div>
           </ProdutoCard>
           <ProdutoCard>
-            <Link to="/">
+            <div to="/">
               <img src={ProdutoImage} alt="Nemesys" />
               <div className="content">
                 <p>Gets</p>
@@ -50,10 +52,10 @@ function Produtos() {
                   10% menos força ao penetrar.
                 </p>
               </div>
-            </Link>
+            </div>
           </ProdutoCard>
           <ProdutoCard>
-            <Link to="/">
+            <div to="/">
               <img src={ProdutoImage} alt="Nemesys" />
               <div className="content">
                 <p>Gets</p>
@@ -63,10 +65,10 @@ function Produtos() {
                   10% menos força ao penetrar.
                 </p>
               </div>
-            </Link>
+            </div>
           </ProdutoCard>
           <ProdutoCard>
-            <Link to="/">
+            <div to="/">
               <img src={ProdutoImage} alt="Nemesys" />
               <div className="content">
                 <p>Gets</p>
@@ -76,13 +78,45 @@ function Produtos() {
                   10% menos força ao penetrar.
                 </p>
               </div>
-            </Link>
+            </div>
           </ProdutoCard>
         </Scroller>
       </Container>
 
       <ProdutoContent>
-
+        <div className="container">
+          <img src={ProdutoImage} alt="Nemesys" />
+          <h2>
+            Sistema de Dentes Nemesys®
+          </h2>
+          <p>
+            <strong>Conheça o novo Sistema de Dentes Nemesys ESCO.</strong>
+          </p>
+          <p>
+            ESCO® oferece o comprovado sistema de dentes de mineração Nemisys como 
+            uma atualização direta e substituição para o sistema SV2® e sistemas de 
+            soldagem concorrentes para escavadeiras hidráulicas de placa. 
+          </p>
+          <div className="row">
+            <div>
+              <h6>Tipo de Máquina:</h6>
+              <div>
+                <img src={EscavadeiraIcon} alt="" />
+              </div>
+              <p>Escavadeira</p>
+            </div>
+            <div>
+              <h6>Aplicação:</h6>
+              <div>
+                <img src={MinaIcon} alt="" />
+              </div>
+              <p>Escavação em Mina</p>
+            </div>
+          </div>
+          <Link>
+            Ver detalhes do produto
+          </Link>
+        </div>
       </ProdutoContent>
     </div>
   );
@@ -139,6 +173,79 @@ const ProdutoContent = styled.div`
   border-left: 1px solid #C4C4C4;
   height: calc(100vh - 72px);
   background-color: #FFF;
+  padding: 24px;
+  overflow: auto;
+
+  .container {
+    max-width: 500px;
+    margin-left: 0;
+  }
+
+  img {
+    width: 100%;
+    height: 240px;
+  }
+
+  h2 {
+    color: #222;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 18px 0;
+  }
+
+  p {
+    color: #043455;
+    font-size: 16px;
+  }
+
+  .row {
+    margin: 18px 0;
+    > div {
+      width: 50%;
+      h6 {
+        font-size: 14px;
+        color: #043455;
+        font-weight: 600;
+      }
+      > div {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background: rgba(162, 175, 219, 0.1);
+        margin: 12px 0;
+        img {
+          width: 30px;
+          height: 30px;
+          object-fit: contain;
+        }
+      }
+      p {
+        color: #0071BC;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  a {
+    width: 100%;
+    padding: 16px;
+    text-align: center;
+    background: #BC080D;
+    border-radius: 4px;
+    color: #FFF;
+    font-weight: bold;
+    margin: 24px 0;
+    text-decoration: none;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #860609;
+    }
+  }
 
   @media screen and (max-width: 760px) {
     right: -100%;
@@ -168,12 +275,13 @@ const ProdutoCard = styled.div`
   display: flex;
   overflow: hidden;
 
-  a {
+  > div {
     width: 100%;
     height: 100%;
     color: #043455;
     display: flex;
     text-decoration: none;
+    cursor: pointer;
 
     img {
       width: 140px;
