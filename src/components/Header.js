@@ -30,7 +30,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #C4C4C4;
-  z-index: 998;
+  z-index: 997;
 
   img {
     width: auto;

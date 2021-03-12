@@ -5,12 +5,12 @@ import Drawer from '../components/Drawer'
 import Header from '../components/Header'
 import api from '../services/api'
 import { ToastContainer, toast } from 'react-toastify'
+import FilterAdvanced from '../components/FilterAdvanced'
 
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import TuneIcon from '@material-ui/icons/Tune';
 
 
 const CssTextField = withStyles({
@@ -38,9 +38,13 @@ function Dashboard() {
   const [categories, setCategories] = useState(null)
 
   useEffect(() => {
+
+    // Lista os dados do usuário
+    
+
+    // Lista as categorias
     api.get('/categories')
     .then(response => {
-      console.log(response.data.data)
       setCategories(response.data.data)
     })
     .catch(error => {
@@ -80,9 +84,8 @@ function Dashboard() {
               ),
             }}
           />
-          <Link to="/">
-            <TuneIcon /> Filtro Avançado
-          </Link>
+          
+          <FilterAdvanced />
         </Filters>
 
         <div className="row">
@@ -150,22 +153,6 @@ const Filters = styled.div`
     }
     input {
       border-radius: 10px;
-    }
-  }
-
-  a {
-    color: #043455;
-    font-size: 14px;
-    padding: 8px 16px;
-    margin: 8px 0 8px 8px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.5s;
-
-    &:hover {
-      background-color: #04345526;
     }
   }
 

@@ -161,7 +161,7 @@ const Container = styled.div`
   transition: width 0.5s;
   overflow-y: auto;
   padding-bottom: 72px;
-  z-index: 999;
+  z-index: 998;
 
   &.opened {
     width: 200px;

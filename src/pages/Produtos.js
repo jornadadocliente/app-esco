@@ -2,8 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
-
-import TuneIcon from '@material-ui/icons/Tune';
+import FilterAdvanced from '../components/FilterAdvanced'
 
 // Imagens
 import ProdutoImage from '../images/gets.png'
@@ -21,10 +20,8 @@ function Produtos() {
             <h4>Você procurou por:</h4>
             <h3>{search}</h3>
           </div>
-          <div>
-            <Link to="/">
-              <TuneIcon /> Filtro Avançado
-            </Link>
+          <div style={{ "position": "relative", "zIndex": 2 }}>
+            <FilterAdvanced />
           </div>
         </NavTitle>
 
@@ -106,7 +103,7 @@ const Container = styled.div`
 
 const NavTitle = styled.div`
   position: fixed;
-  z-index: 998;
+  z-index: 997;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -126,22 +123,6 @@ const NavTitle = styled.div`
   h3 {
     font-size: 22px;
     text-transform: uppercase;
-  }
-
-  a {
-    color: #043455;
-    font-size: 14px;
-    padding: 8px 16px;
-    margin: 8px 0 8px 8px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.5s;
-
-    &:hover {
-      background-color: #04345526;
-    }
   }
 `
 

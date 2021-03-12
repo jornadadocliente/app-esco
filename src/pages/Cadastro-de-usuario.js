@@ -56,11 +56,10 @@ function CadastroDeUsuario() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(values)
     let data = {
       name: values.nome,
       email: values.email,
-      profile_image: null,
+      profile_image: "https://www.wikiaves.com.br/img/semfoto.png",
       cpf: values.cpf,
       type: values.type,
       phone: values.telefone,
