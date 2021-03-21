@@ -1,16 +1,57 @@
-import { Link, useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
 import FilterAdvanced from '../components/FilterAdvanced'
+import db from '../database'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 // Imagens
-import ProdutoImage from '../images/gets.png'
-import EscavadeiraIcon from '../images/escavadeira-icon.svg'
-import MinaIcon from '../images/mina-icon.svg'
 
 function Produtos() {
   const { search } = useParams()
+  const history = useHistory()
+
+  const [windowWidth, setWindowWidth] = useState(null)
+  const [productsFiltered, setProductsFiltered] = useState(null)
+  const [openDetailedProduct, setOpenDetailedProduct] = useState(null)
+
+  const products = useLiveQuery(
+    () => db.products.toArray()
+  )
+
+  useEffect(() => {
+    if (window) {
+      setWindowWidth(window.innerWidth)
+    }
+  }, [])
+
+  useEffect(() => {
+    const newProducts = products?.filter(item => {
+      return item.category.title === search
+    })
+    if (newProducts) {
+      setProductsFiltered(newProducts)
+      setOpenDetailedProduct(newProducts[0])
+    }
+  }, [products, search])
+
+  function handleChoiceProduto(event, produtoId) {
+    event.preventDefault();
+    // eslint-disable-next-line
+    const SelectedProduct = productsFiltered.map(item => {
+      if (item.id === produtoId) {
+        return item
+      }
+    })
+    setOpenDetailedProduct(SelectedProduct[0])
+
+    if (windowWidth < 760) {
+      history.push(`/produto/${produtoId}`)
+    }
+  }
+
   return (
     <div className="row">
       <Drawer />
@@ -28,95 +69,57 @@ function Produtos() {
         </NavTitle>
 
         <Scroller>
-          <ProdutoCard>
-            <div to="/">
-              <img src={ProdutoImage} alt="Nemesys" />
-              <div className="content">
-                <p>Gets</p>
-                <h5>Nemesys®</h5>
-                <p>
-                  Sistema de travamento integrado. Menor estresse e redução do peso. 
-                  10% menos força ao penetrar.
-                </p>
+          {productsFiltered?.map(produto => (
+            <ProdutoCard>
+              <div onClick={ e => handleChoiceProduto(e, produto.id) }>
+                <img src={produto.image} alt={produto.thumb.title} />
+                <div className="content">
+                  <p>{produto.category.title}</p>
+                  <h5>{produto.thumb.title}</h5>
+                  <p>
+                    {produto.thumb.mini_description}
+                  </p>
+                </div>
               </div>
-            </div>
-          </ProdutoCard>
-          <ProdutoCard>
-            <div to="/">
-              <img src={ProdutoImage} alt="Nemesys" />
-              <div className="content">
-                <p>Gets</p>
-                <h5>Ultralock</h5>
-                <p>
-                  Sistema de travamento integrado. Menor estresse e redução do peso. 
-                  10% menos força ao penetrar.
-                </p>
-              </div>
-            </div>
-          </ProdutoCard>
-          <ProdutoCard>
-            <div to="/">
-              <img src={ProdutoImage} alt="Nemesys" />
-              <div className="content">
-                <p>Gets</p>
-                <h5>Perfis de Pontas</h5>
-                <p>
-                  Sistema de travamento integrado. Menor estresse e redução do peso. 
-                  10% menos força ao penetrar.
-                </p>
-              </div>
-            </div>
-          </ProdutoCard>
-          <ProdutoCard>
-            <div to="/">
-              <img src={ProdutoImage} alt="Nemesys" />
-              <div className="content">
-                <p>Gets</p>
-                <h5>Sistema Antimarreta</h5>
-                <p>
-                  Sistema de travamento integrado. Menor estresse e redução do peso. 
-                  10% menos força ao penetrar.
-                </p>
-              </div>
-            </div>
-          </ProdutoCard>
+            </ProdutoCard>
+          ))}
         </Scroller>
       </Container>
 
       <ProdutoContent>
-        <div className="container">
-          <img src={ProdutoImage} alt="Nemesys" />
-          <h2>
-            Sistema de Dentes Nemesys®
-          </h2>
-          <p>
-            <strong>Conheça o novo Sistema de Dentes Nemesys ESCO.</strong>
-          </p>
-          <p>
-            ESCO® oferece o comprovado sistema de dentes de mineração Nemisys como 
-            uma atualização direta e substituição para o sistema SV2® e sistemas de 
-            soldagem concorrentes para escavadeiras hidráulicas de placa. 
-          </p>
-          <div className="row">
-            <div>
-              <h6>Tipo de Máquina:</h6>
+        {openDetailedProduct ? (
+          <div className="container">
+            <img src={openDetailedProduct.image} alt="Nemesys" />
+            <h2>
+              {openDetailedProduct.name}
+            </h2>
+            <p>
+              <strong>{openDetailedProduct.detailed.subtitle}</strong>
+            </p>
+            <p>
+              {openDetailedProduct.detailed.resume}
+            </p>
+            <div className="row">
               <div>
-                <img src={EscavadeiraIcon} alt="" />
+                <h6>Tipo de Máquina:</h6>
+                <div>
+                  <img src={openDetailedProduct.detailed.machine_type.icon} alt="" />
+                </div>
+                <p>{openDetailedProduct.detailed.machine_type.name}</p>
               </div>
-              <p>Escavadeira</p>
-            </div>
-            <div>
-              <h6>Aplicação:</h6>
               <div>
-                <img src={MinaIcon} alt="" />
+                <h6>Aplicação:</h6>
+                <div>
+                  <img src={openDetailedProduct.detailed.application.icon} alt="" />
+                </div>
+                <p>{openDetailedProduct.detailed.application.name}</p>
               </div>
-              <p>Escavação em Mina</p>
             </div>
+            <Link to={`/produto/${openDetailedProduct.id}`}>
+              Ver detalhes do produto
+            </Link>
           </div>
-          <Link>
-            Ver detalhes do produto
-          </Link>
-        </div>
+        ) : null}
       </ProdutoContent>
     </div>
   );
@@ -184,6 +187,7 @@ const ProdutoContent = styled.div`
   img {
     width: 100%;
     height: 240px;
+    object-fit: contain;
   }
 
   h2 {
@@ -309,6 +313,15 @@ const ProdutoCard = styled.div`
       img {
         width: 100%;
         height: 100px;
+      }
+    }
+
+    > div {
+      flex-direction: column;
+      img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
       }
     }
   }

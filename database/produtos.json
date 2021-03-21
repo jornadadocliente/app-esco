@@ -1,0 +1,84 @@
+[
+	{
+		"id": 1,
+		"category": "Gets",
+		"image": "google.com/image",
+		"thumb": {
+			"title": "Nemesys®",
+			"mini_description": "Sistema de travamento integrado. Menor estresse e redução do peso. 10% menos força ao penetrar.",
+		},
+		"detailed": {
+			"title": "Sistema de Dentes Nemesys®",
+			"subtitle": "Conheça o novo Sistema de Dentes Nemisys ESCO.",
+			"resume": "ESCO® oferece o comprovado sistema de dentes de mineração Nemisys como uma atualização direta e substituição para o sistema SV2® e sistemas de soldagem concorrentes para escavadeiras hidráulicas de placa.",
+			"machine_type": {
+				"icon": "google.com/escavadeira",
+				"name": "Escavadeira"
+			},
+			"aplication": {
+				"icon": "google.com/escavacao",
+				"name": "Escavação em Mina"
+			}
+		},
+    "intern": {
+      "title": "Sistema de Dentes Nemesys®",
+      "subtitle": "Desenvolvido para escavadeiras de 160 toneladas, 200 toneladas e 250 toneladas, o sistema Nemisys é uma classe à parte.",
+      "description": "ESCO® oferece o comprovado sistema de dentes de mineração Nemisys como uma atualização direta e substituição para o sistema SV2® e sistemas de soldagem concorrentes para escavadeiras hidráulicas de placa. Operando em mais de 700 máquinas em todo o mundo, o sistema Nemisys demonstrou liderança de mercado em confiabilidade, segurança local e aprimoramento do desempenho da máquina.",
+      "pricipal_image": "https://www.wikiaves.com.br/img/semfoto.png",
+      "benefits_image": "https://www.wikiaves.com.br/img/semfoto.png",
+      "benefits": [
+        {
+          "title": "Maior disponibilidade da máquina.",
+          "text": "Maior vida útil da peça e retenção superior resultam em menos G.E.T. planejado e não planejado substituições."
+        },
+        {
+          "title": "Projetado para durar mais.",
+          "text": "Materiais premium e fabricação de precisão fornecem durabilidade e confiabilidade inigualáveis."
+        },
+        {
+          "title": "Menos paradas do britador.",
+          "text": "Um sistema de travamento mais confiável reduz bastante as chances de desligamento do britador devido à perda do dente."
+        }
+      ],
+      "title_tree": "Proteção avançada do adaptador.",
+      "image_tree": "https://www.wikiaves.com.br/img/semfoto.png",
+      "full_video": "https://www.youtube.com/embed/mtwTLJNRGCo", // Precisa ser o link do video Embed
+      "reasons_title": "Porquê escolher Sistema de Dentes Nemisys",
+      "reasons": [
+        "10% menos força ao penetrar e aumento de penetração.",
+        "Sistema de travamento integrado",
+        "Menor estresse e redução do peso.",
+        "Desgaste uniforme dos protetores."
+      ],
+      "success_case_description": "Explore as histórias de sucesso de clientes abaixo e veja como o desempenho comprovado do sistema Nemisys está ajudando as minas em todo o mundo a reduzir os custos operacionais, maximizar a disponibilidade da máquina e melhorar a segurança.",
+      "success_cases": [
+        {
+          "title": "MINA VÊ GRANDES GANHOS DA NEMISYS® ATUALIZAÇÃO DO SISTEMA DE DENTE.",
+          "description": "Essa mina de minério de ferro aumentou drasticamente a disponibilidade de suas máquinas simplesmente atualizando o G.E.T. de sua escavadeira frontal do sistema de um concorrente para o sistema Nemisys da ESCO.",
+          "results": [
+            "<p><strong>80%</strong> mais vida útil do dente;</p>",
+            "<p>Instalação de peças <strong>50%</strong> mais rápida e remoção;</p>",
+            "<p><strong>50%</strong> menos adaptador intermediário substituições;</p>",
+            "<p><strong>Extramamente satisfeito com segurança melhorada.</strong></p>"
+          ]
+        }
+      ],
+      "staffs": [
+        {
+          "image": "https://www.wikiaves.com.br/img/semfoto.png",
+          "name": "Humberto Rocha",
+          "occupation": "Engenheiro Chefe",
+          "occupation_2": "Projeto de Escavação",
+          "text": "O Sistema de Dentes Nemesys é uma classe a parte, com 10% menos força de penetração para ganho de eficiência e redução de desgaste ao equipamento. Ligas mais resistentes e duradouras."
+        },
+        {
+          "image": "https://www.wikiaves.com.br/img/semfoto.png",
+          "name": "Carlos Monteiro",
+          "occupation": "Engenheiro",
+          "occupation_2": "Projeto de Escavação",
+          "text": "As pontas N70 mantém a agudeza à medida que desgastam, resultando na excelente penetração e melhor utilização da vida útil."
+        }
+      ]
+    }
+	}
+]

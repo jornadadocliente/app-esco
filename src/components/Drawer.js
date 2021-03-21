@@ -63,7 +63,6 @@ const Drawer = (props) => {
   useEffect(() => {
     api.get('/categories')
     .then(response => {
-      console.log(response.data.data)
       setCategories(response.data.data)
     })
     .catch(error => {
@@ -76,7 +75,7 @@ const Drawer = (props) => {
   };
 
   function logout() {
-    window.localStorage.removeItem('token')
+    window.localStorage.removeItem('esco_token')
     history.push("/")
   }
 

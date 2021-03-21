@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import api from '../services/api'
@@ -13,6 +13,19 @@ function Login() {
 
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
+
+  useEffect(() => {
+    if (window) {
+      try {
+        const token = window.localStorage.getItem('esco_token')
+        if (token) {
+          history.push("/dashboard")
+        }
+      } catch (error) {
+        
+      }
+    }
+  }, [history])
 
   function handleSubmit(event) {
     event.preventDefault()

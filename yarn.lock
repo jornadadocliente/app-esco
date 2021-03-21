@@ -4279,6 +4279,16 @@ detect-port-alt@1.1.6:
     address "^1.0.1"
     debug "^2.6.0"
 
+dexie-react-hooks@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/dexie-react-hooks/-/dexie-react-hooks-1.0.6.tgz#a21d116addb2bb785507bf924cc6e963d858d5d5"
+  integrity sha512-OFoOBC4BQzkVGicuWl/cIMtlPp0wTAnUXwUJzq+l/zp0XVGmwEWkemRFq7JbudJLT0DINFVVzgVhGV7KOUK7uA==
+
+dexie@3.1.0-alpha.8:
+  version "3.1.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.1.0-alpha.8.tgz#154cf0bba8d0c0d9e7e2e3128a60ebb0597da8b6"
+  integrity sha512-7LGEXCJPfsMkgRrLMNqeCxt32CnZrrFyRU5kt6v5+bVXW43d7C2hU4WHORKYaP3BWumBg4A+YIaBYKV9EhX9CQ==
+
 diff-sequences@^26.6.2:
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-26.6.2.tgz#48ba99157de1923412eed41db6b6d4aa9ca7c0b1"
@@ -9493,6 +9503,11 @@ react-app-polyfill@^2.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
+
+react-detect-offline@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/react-detect-offline/-/react-detect-offline-2.4.3.tgz#167c340f86adba719b7d57acef69a2f5664412fa"
+  integrity sha512-YDJRJ1qbCcwCV37yiBGEzC+SeHtqe2kKV9EVYDEo77gm9QFLa2tZesF6ciOSx1A+tmMAZGtBD38VHdBQVe4yAA==
 
 react-dev-utils@^11.0.3:
   version "11.0.3"

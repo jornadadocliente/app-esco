@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
-import api from '../services/api'
-import { ToastContainer, toast } from 'react-toastify'
+import Sync from '../components/Sync'
+import { ToastContainer } from 'react-toastify'
 import FilterAdvanced from '../components/FilterAdvanced'
+import db from '../database'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -35,25 +37,11 @@ function Dashboard() {
   const [values, setValues] = useState({
     search_input: null
   })
-  const [categories, setCategories] = useState(null)
+  // const [categories, setCategories] = useState(null)
 
-  useEffect(() => {
-
-    // Lista os dados do usuário
-    
-
-    // Lista as categorias
-    api.get('/categories')
-    .then(response => {
-      setCategories(response.data.data)
-    })
-    .catch(error => {
-      console.log(error)
-      toast.info('Erro ao se conectar com o servidor!', {
-        autoClose: 5000
-      })
-    })
-  }, [])
+  const categories = useLiveQuery(
+    () => db.categories.toArray()
+  )
 
   const handleChange = (event) => {
     setValues({
@@ -66,6 +54,7 @@ function Dashboard() {
     <div className="row">
       <Drawer />
       <Header />
+      <Sync />
         
       <Container className="container">
         <h1>O que você procura?</h1>
