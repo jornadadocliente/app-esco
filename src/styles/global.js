@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: #F9F9F9;
+    overflow-x: hidden;
   }
 
   button {
@@ -35,6 +36,13 @@ const GlobalStyle = createGlobalStyle`
   .row {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .col-md-6 {
+    width: 50%;
+    @media screen and (max-width: 800px) {
+      width: 100%;
+    }
   }
 
   .only-desktop {

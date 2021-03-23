@@ -43,10 +43,15 @@ function Login() {
         history.push("/dashboard")
       })
       .catch(error => {
-        console.log(error)
-        toast.info('Erro ao se conectar com o servidor!', {
-          autoClose: 5000
-        })
+        if (error.response.status === 401) {
+          toast.info('Usuário ou senha incorreto!', {
+            autoClose: 5000
+          })
+        } else {
+          toast.info('Erro ao se conectar com o servidor!', {
+            autoClose: 5000
+          })
+        }
       })
     } else {
       toast.info('Preencha os campos corretamente!', {

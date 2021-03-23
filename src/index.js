@@ -12,6 +12,7 @@ import Dashboard from './pages/Dashboard';
 import CadastroDeUsuario from './pages/Cadastro-de-usuario';
 import ListaDeUsuario from './pages/Listagem-de-usuario';
 import Produtos from './pages/Produtos';
+import ProdutoUnico from './pages/Produto';
 
 ReactDOM.render(
   <>
@@ -25,6 +26,9 @@ ReactDOM.render(
         
         {/* Rotas de produtos dinâmicas */}
         <Route path="/produtos/:search" component={Produtos} />
+
+        {/* Rota de Produto */}
+        <Route path="/produto/:id" exact={true} component={ProdutoUnico} />
       </Switch>
     </BrowserRouter>
   </>,
