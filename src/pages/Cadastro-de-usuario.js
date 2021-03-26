@@ -37,14 +37,14 @@ const CssSelect = withStyles({
 function CadastroDeUsuario() {
 
   const [values, setValues] = useState({
-    nome: null,
-    email: null,
-    cpf: null,
-    telefone: null,
-    data_nascimento: null,
-    senha: null,
-    confirm_senha: null,
-    type: null
+    nome: "",
+    email: "",
+    cpf: "",
+    telefone: "",
+    data_nascimento: "",
+    senha: "",
+    confirm_senha: "",
+    type: ""
   });
 
   const handleChange = (event) => {
@@ -89,7 +89,6 @@ function CadastroDeUsuario() {
         <h1>Cadastro De Usuário</h1>
         <FormUser onSubmit={e => handleSubmit(e)} noValidate autoComplete="off">
           <CssTextField 
-            error={values.nome ? false : true}
             label="Nome" 
             variant="outlined" 
             name="nome" 
@@ -98,7 +97,6 @@ function CadastroDeUsuario() {
             required
           />
           <CssTextField 
-            error={values.email ? false : true}
             label="Email" 
             variant="outlined" 
             name="email" 
@@ -107,7 +105,6 @@ function CadastroDeUsuario() {
             required
             />
           <CssTextField 
-            error={values.senha ? false : true}
             label="Senha" 
             variant="outlined" 
             name="senha" 
@@ -117,7 +114,6 @@ function CadastroDeUsuario() {
             required
             />
           <CssTextField 
-            error={values.senha !== values.confirm_senha}
             label="Confirmar Senha" 
             variant="outlined" 
             name="confirm_senha" 
@@ -129,7 +125,6 @@ function CadastroDeUsuario() {
           <ReactInputMask mask="999.999.999-99" maskChar="" onChange={handleChange} value={values.cpf} >
             {() => (
               <CssTextField 
-                error={values.cpf ? false : true}
                 type="tel"
                 label="CPF" 
                 variant="outlined"
@@ -141,7 +136,6 @@ function CadastroDeUsuario() {
           <ReactInputMask mask="(99) 9 9999-9999" maskChar="" value={values.telefone} onChange={handleChange} >
             {() => (
               <CssTextField 
-                error={values.telefone ? false : true}
                 type="tel"
                 label="Telefone" 
                 variant="outlined" 
@@ -153,7 +147,6 @@ function CadastroDeUsuario() {
           <ReactInputMask mask="99/99/9999" maskChar="" value={values.data_nascimento} onChange={handleChange} >
             {() => (
               <CssTextField 
-                error={values.data_nascimento ? false : true}
                 label="Data de nascimento" 
                 variant="outlined" 
                 name="data_nascimento"
@@ -166,7 +159,6 @@ function CadastroDeUsuario() {
               Tipo de Usuário
             </InputLabel>
             <CssSelect
-              error={values.type ? false : true}
               label="Tipo de Usuário"
               labelId="tipo_de_usuario"
               value={values.type}

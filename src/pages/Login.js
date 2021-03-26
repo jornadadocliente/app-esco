@@ -4,18 +4,26 @@ import styled from 'styled-components'
 import api from '../services/api'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify'
+import { useClearCache } from 'react-clear-cache'
 
 import LogoImg from '../images/logo_esco.png'
 
 
 function Login() {
   const history = useHistory()
+  const { isLatestVersion, emptyCacheStorage } = useClearCache()
 
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
 
   useEffect(() => {
-    if (window) {
+    if (!isLatestVersion) {
+      emptyCacheStorage()
+    }
+  }, [isLatestVersion, emptyCacheStorage])
+
+  useEffect(() => {
+    if (window && isLatestVersion) {
       try {
         const token = window.localStorage.getItem('esco_token')
         if (token) {
@@ -25,7 +33,7 @@ function Login() {
         
       }
     }
-  }, [history])
+  }, [history, isLatestVersion])
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -37,13 +45,14 @@ function Login() {
       api.post('/auth/login', data)
       .then(response => {
         window.localStorage.setItem('esco_token', response.data.access_token)
+        window.localStorage.setItem('esco_user_id', response.data.user.id)
         toast.info('Bem-Vindo!', {
           autoClose: 5000
         })
         history.push("/dashboard")
       })
       .catch(error => {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           toast.info('Usuário ou senha incorreto!', {
             autoClose: 5000
           })
@@ -99,6 +108,10 @@ function Login() {
         </div>
       </div>
 
+      <CacheCleared>
+        Aplicativo {isLatestVersion ? 'atualizado.' : 'desatualizado.'}
+      </CacheCleared>
+
       <ToastContainer 
         position="top-right"
         autoClose={5000}
@@ -118,6 +131,15 @@ const Body = styled.div`
   .row {
     align-items: center;
   }
+`
+
+const CacheCleared = styled.p`
+  position: fixed;
+  bottom: 15px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #e5e5e5;
 `
 
 const Logo = styled.div`

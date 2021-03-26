@@ -29,7 +29,7 @@ function Produtos() {
 
   useEffect(() => {
     const newProducts = products?.filter(item => {
-      return item.category.title === search
+      return item.category?.title === search
     })
     if (newProducts) {
       setProductsFiltered(newProducts)

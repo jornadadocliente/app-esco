@@ -31,17 +31,17 @@ const FilterAdvanced = (props) => {
             <div className="row">
               <div className="input__group">
                 <input type="radio" name="type_machine" id="maquina-1" value="Escavadeira e Retroescavadeira" />
-                <label for="maquina-1">Escavadeira e Retroescavadeira</label>
+                <label htmlFor="maquina-1">Escavadeira e Retroescavadeira</label>
               </div>
               
               <div className="input__group">
                 <input type="radio" name="type_machine" id="maquina-2" value="Retroescavadeira de Trator" />
-                <label for="maquina-2">Retroescavadeira de Trator</label>
+                <label htmlFor="maquina-2">Retroescavadeira de Trator</label>
               </div>
               
               <div className="input__group">
                 <input type="radio" name="type_machine" id="maquina-3" value="Retroescavadeira Carregador Frontal" />
-                <label for="maquina-3">Retroescavadeira Carregador Frontal</label>
+                <label htmlFor="maquina-3">Retroescavadeira Carregador Frontal</label>
               </div>
             </div>
           </FilterSection>
@@ -51,37 +51,37 @@ const FilterAdvanced = (props) => {
             <div className="row">
               <div className="input__group">
                 <input type="radio" name="model_machine" id="modelo-1" value="Cable Shovel" />
-                <label for="modelo-1">Cable Shovel</label>
+                <label htmlFor="modelo-1">Cable Shovel</label>
               </div>
               
               <div className="input__group">
                 <input type="radio" name="model_machine" id="modelo-2" value="Construction Excavator" />
-                <label for="modelo-2">Construction Excavator</label>
+                <label htmlFor="modelo-2">Construction Excavator</label>
               </div>
               
               <div className="input__group">
                 <input type="radio" name="model_machine" id="modelo-3" value="Continuos Miner" />
-                <label for="modelo-3">Continuos Miner</label>
+                <label htmlFor="modelo-3">Continuos Miner</label>
               </div>
               <div className="input__group">
                 <input type="radio" name="model_machine" id="modelo-4" value="Conveyor" />
-                <label for="modelo-4">Conveyor</label>
+                <label htmlFor="modelo-4">Conveyor</label>
               </div>
               <div className="input__group">
                 <input type="radio" name="model_machine" id="modelo-5" value="Dozer" />
-                <label for="modelo-5">Dozer</label>
+                <label htmlFor="modelo-5">Dozer</label>
               </div>
               <div className="input__group">
                 <input type="radio" name="model_machine" id="modelo-6" value="Dragline" />
-                <label for="modelo-6">Dragline</label>
+                <label htmlFor="modelo-6">Dragline</label>
               </div>
               <div className="input__group">
                 <input type="radio" name="model_machine" id="modelo-7" value="Dregde" />
-                <label for="modelo-7">Dregde</label>
+                <label htmlFor="modelo-7">Dregde</label>
               </div>
               <div className="input__group">
                 <input type="radio" name="model_machine" id="modelo-8" value="Grader" />
-                <label for="modelo-8">Grader</label>
+                <label htmlFor="modelo-8">Grader</label>
               </div>
             </div>
           </FilterSection>
@@ -91,17 +91,17 @@ const FilterAdvanced = (props) => {
             <div className="row">
               <div className="input__group">
                 <input type="radio" name="aplication" id="aplication-1" value="Escavadeira e Retroescavadeira" />
-                <label for="aplication-1">Escavadeira e Retroescavadeira</label>
+                <label htmlFor="aplication-1">Escavadeira e Retroescavadeira</label>
               </div>
               
               <div className="input__group">
                 <input type="radio" name="aplication" id="aplication-2" value="Retroescavadeira de Trator" />
-                <label for="aplication-2">Retroescavadeira de Trator</label>
+                <label htmlFor="aplication-2">Retroescavadeira de Trator</label>
               </div>
               
               <div className="input__group">
                 <input type="radio" name="aplication" id="aplication-3" value="Retroescavadeira Carregador Frontal" />
-                <label for="aplication-3">Retroescavadeira Carregador Frontal</label>
+                <label htmlFor="aplication-3">Retroescavadeira Carregador Frontal</label>
               </div>
             </div>
           </FilterSection>

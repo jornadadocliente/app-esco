@@ -9,11 +9,22 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Sync = (props) => {
 
+  const [user, setUser] = useState(null)
   const [categories, setCategories] = useState(null);
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect( () => {
+
+    // Mostra o usuário Logado
+    const user_id = window.localStorage.getItem('esco_user_id')
+    api.get(`/user/${user_id}`)
+    .then(response => {
+      setUser(response.data.data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
 
     // Lista Categorias
     api.get('/categories')
@@ -27,6 +38,7 @@ const Sync = (props) => {
     // Lista Produtos
     api.get('/products')
     .then(response => {
+      console.log(response.data.data)
       setProducts(response.data.data)
     })
     .catch(error => {
@@ -34,6 +46,17 @@ const Sync = (props) => {
     })
 
   }, [])
+
+  useEffect(() => {
+    try {
+      if (user) {
+        db.user.clear()
+        db.user.add(user)
+      }
+    } catch (error) {
+
+    }
+  }, [user])
 
   useEffect(() => {
 
