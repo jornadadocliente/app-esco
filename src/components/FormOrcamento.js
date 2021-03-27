@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import db from '../database'
 import { useLiveQuery } from 'dexie-react-hooks'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify'
 
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -35,7 +37,7 @@ const CssSelect = withStyles({
 const FormOrcamento = (props) => {
 
   const user = useLiveQuery(
-    () => db.products.toArray()
+    () => db.user.toArray()
   )
 
   const [values, setValues] = useState({
@@ -57,10 +59,19 @@ const FormOrcamento = (props) => {
   function handleSubmit(e) {
     e.preventDefault();
     let data = {
-      user_id: 1,
-      name: values.nome,
+      user_id: user[0].id,
+      product_id: props?.produtoId,
+      full_name: values.nome,
+      product_category_id: values.familia,
+      email: values.email,
+      phone: values.telefone,
+      details: values.details,
+      produto: values.produto
     }
-    console.log(data)
+    db.orcamentos.add(data)
+    toast.info('Orçamento salvo!', {
+      autoClose: 5000
+    })
   }
 
   return (
@@ -144,6 +155,12 @@ const FormOrcamento = (props) => {
       <SubmitContent type="submit" onClick={ e => handleSubmit(e) }>
         Solicitar Orçamento
       </SubmitContent>
+
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        pauseOnHover
+      />
     </Container>
   )
 }

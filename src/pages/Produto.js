@@ -29,7 +29,6 @@ function Produto() {
       }
     })
     setProduto(produto_selected)
-    console.log(produto_selected)
   }, [products, id])
 
   return (
@@ -176,7 +175,7 @@ function Produto() {
           </AnchorLink>
         </section>
 
-        <FormOrcamento id="solicitar-orcamento" />
+        <FormOrcamento id="solicitar-orcamento" produtoId={produto?.id} />
       </Container>
 
     </div>

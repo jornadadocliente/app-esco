@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import api from "../services/api"
 import db from '../database'
+import { useLiveQuery } from 'dexie-react-hooks'
 import styled from 'styled-components'
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -13,6 +14,10 @@ const Sync = (props) => {
   const [categories, setCategories] = useState(null);
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const orcamentos = useLiveQuery(
+    () => db.orcamentos.toArray()
+  )
 
   useEffect( () => {
 
@@ -38,7 +43,6 @@ const Sync = (props) => {
     // Lista Produtos
     api.get('/products')
     .then(response => {
-      console.log(response.data.data)
       setProducts(response.data.data)
     })
     .catch(error => {
@@ -85,6 +89,44 @@ const Sync = (props) => {
     }
 
   }, [products])
+
+  useEffect(() => {
+    if (orcamentos?.length > 0) {
+      try {
+        // eslint-disable-next-line
+        orcamentos?.map(item => {
+          let data = {
+            user_id: item.user_id,
+            product_id: item.product_id,
+            full_name: item.full_name,
+            product_category_id: item.product_category_id,
+            email: item.email,
+            phone: item.phone,
+            details: item.details
+          }
+          api.post('/proposal', data)
+          .then(() => {
+            db.orcamentos.delete(item.id)
+          })
+          .catch(error => {
+            if (error.response.status === 500) {
+              toast.info(`Erro ao enviar o orçamento ${item.id}, verifique sua conexão com a internet!`, {
+                autoClose: 5000
+              })
+            } else {
+              toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {
+                autoClose: 5000
+              })
+            }
+          })
+        })
+      } catch (error) {
+        toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {
+          autoClose: 5000
+        })
+      }
+    }
+  }, [orcamentos])
 
   return (
     <>

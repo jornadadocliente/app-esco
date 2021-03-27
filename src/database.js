@@ -13,4 +13,8 @@ db.version(3).stores({
   user: 'id, api_token, birth_date, cpf, email, email_verified_at, name, phone, profile_image, status, type'
 })
 
+db.version(4).stores({
+  orcamentos: 'id++, user_id, product_id, full_name, product_category_id, email, phone, details'
+})
+
 export default db;

@@ -443,7 +443,7 @@ const Exit = styled.div`
   color: #7C8CA6;
   font-weight: 600;
   background: #FFF;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #E5E5E5;
   cursor: pointer;
   transition: all 0.5s;
 
@@ -452,7 +452,7 @@ const Exit = styled.div`
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: #E5E5E5;
   }
 
   &.opened {
