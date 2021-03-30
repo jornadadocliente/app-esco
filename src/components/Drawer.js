@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link, NavLink, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import api from "../services/api"
+import db from '../database'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
@@ -56,19 +57,12 @@ const AccordionDetails = withStyles((theme) => ({
 const Drawer = (props) => {
 
   const history = useHistory()
-  const [categories, setCategories] = useState(null)
   const [open, setOpen] = useState(false)
   const [expanded, setExpanded] = useState('panel1');
 
-  useEffect(() => {
-    api.get('/categories')
-    .then(response => {
-      setCategories(response.data.data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }, [])
+  const categories = useLiveQuery(
+    () => db.categories.toArray()
+  )
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -77,6 +71,14 @@ const Drawer = (props) => {
   function logout() {
     window.localStorage.removeItem('esco_token')
     history.push("/")
+  }
+
+  function handleCleanOrcamentos( event ) {
+    event.preventDefault()
+    if (window.confirm("Tem certeza que deseja limpar os orçamentos?")) {
+      db.orcamentos.clear()
+      console.log("Orçamentos deletados!")
+    }
   }
 
   return (
@@ -109,10 +111,10 @@ const Drawer = (props) => {
           <HomeRoundedIcon />
           Início
         </NavLink>
-        <NavLink exact to="/">
+        <button onClick={ event => handleCleanOrcamentos(event) } >
           <AccountBalanceWalletOutlinedIcon />
           Orçamentos
-        </NavLink>
+        </button>
         <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')} disabled={!open}>
           <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
             <LanguageIcon />
@@ -120,7 +122,7 @@ const Drawer = (props) => {
           </AccordionSummary>
           <AccordionDetails>
             {categories?.map(item => (
-              <NavLink exact to={`/produtos/${item.id}`}>
+              <NavLink exact to={`/produtos/${item.title}`}>
                 {item.title}
               </NavLink>
             ))}
@@ -338,9 +340,11 @@ const Menu = styled.div`
   display: flex;
   flex-direction: column;
 
-  a {
+  a, button {
     padding: 8px 16px;
+    border: none;
     border-bottom: 0.25px solid #C5CCE9;
+    background: #fff;
     color: #043455;
     margin: 4px 14px;
     display: flex;
@@ -412,7 +416,7 @@ const Menu = styled.div`
   }
 
   &.opened {
-    a {
+    a, button {
       width: 172px;
       svg {
         margin-left: 0;

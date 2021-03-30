@@ -175,7 +175,7 @@ function Produto() {
           </AnchorLink>
         </section>
 
-        <FormOrcamento id="solicitar-orcamento" produtoId={produto?.id} />
+        <FormOrcamento id="solicitar-orcamento" produtoId={produto?.id} produto={ produto ? produto : null } />
       </Container>
 
     </div>

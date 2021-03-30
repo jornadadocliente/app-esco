@@ -46,38 +46,60 @@ function CadastroDeUsuario() {
     confirm_senha: "",
     type: ""
   });
+  const [errors, setErrors] = useState({})
 
   const handleChange = (event) => {
+    event.preventDefault()
+    handleValidate()
     setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
   };
 
+  const handleValidate = (event) => {
+    let temp = {}
+    temp.nome = values.nome.length !== 0 ? "" : "Este campo é obrigatório!"
+    temp.email = values.email.length !== 0 && (/\S+@\S+\.\S+/).test(values.email) ? "" : "Email inválido!"
+    temp.cpf = values.cpf.length !== 0 ? "" : "Este campo é obrigatório!"
+    temp.type = values.type.length !== 0 ? "" : "Este campo é obrigatório!"
+    temp.telefone = values.telefone.length !== 0 ? "" : "Este campo é obrigatório!"
+    temp.data_nascimento = values.data_nascimento.length !== 0 ? "" : "Este campo é obrigatório!"
+    temp.senha = values.senha.length !== 0 ? "" : "Este campo é obrigatório!"
+    temp.confirm_senha = values.confirm_senha.length !== 0 && values.confirm_senha === values.senha ? "" : "As senhas estão diferentes!"
+    setErrors({
+      ...temp
+    })
+
+    return Object.values(temp).every(x => x === "")
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    let data = {
-      name: values.nome,
-      email: values.email,
-      profile_image: "https://www.wikiaves.com.br/img/semfoto.png",
-      cpf: values.cpf,
-      type: values.type,
-      phone: values.telefone,
-      birth_date: values.data_nascimento,
-      password: values.senha
+    if (handleValidate()) {
+      let data = {
+        name: values.nome,
+        email: values.email,
+        profile_image: "https://www.wikiaves.com.br/img/semfoto.png",
+        cpf: values.cpf,
+        type: values.type,
+        phone: values.telefone,
+        birth_date: values.data_nascimento,
+        password: values.senha
+      }
+      api.post("/users", data)
+      .then(response => {
+        toast.info(`${values.nome}, cadastrado com sucesso!`, {
+          autoClose: 5000
+        })
+      })
+      .catch(error => {
+        console.log(error)
+        toast.info('Erro ao se conectar com o servidor!', {
+          autoClose: 5000
+        })
+      })
     }
-    api.post("/users", data)
-    .then(response => {
-      toast.info(`${values.nome}, cadastrado com sucesso!`, {
-        autoClose: 5000
-      })
-    })
-    .catch(error => {
-      console.log(error)
-      toast.info('Erro ao se conectar com o servidor!', {
-        autoClose: 5000
-      })
-    })
   }
 
   return (
@@ -87,16 +109,19 @@ function CadastroDeUsuario() {
 
       <Container className="container">
         <h1>Cadastro De Usuário</h1>
-        <FormUser onSubmit={e => handleSubmit(e)} noValidate autoComplete="off">
+        <FormUser onSubmit={e => handleSubmit(e)} autoComplete="off">
           <CssTextField 
+            error={errors.nome}
             label="Nome" 
             variant="outlined" 
             name="nome" 
             value={values.nome}
-            onChange={handleChange}
+            onChange={e => handleChange(e)}
             required
           />
           <CssTextField 
+            error={errors.email}
+            type="email"
             label="Email" 
             variant="outlined" 
             name="email" 
@@ -105,6 +130,7 @@ function CadastroDeUsuario() {
             required
             />
           <CssTextField 
+            error={errors.senha}
             label="Senha" 
             variant="outlined" 
             name="senha" 
@@ -118,6 +144,7 @@ function CadastroDeUsuario() {
             variant="outlined" 
             name="confirm_senha" 
             value={values.confirm_senha}
+            error={errors.confirm_senha}
             onChange={handleChange}
             type="password"
             required
@@ -125,6 +152,7 @@ function CadastroDeUsuario() {
           <ReactInputMask mask="999.999.999-99" maskChar="" onChange={handleChange} value={values.cpf} >
             {() => (
               <CssTextField 
+                error={errors.cpf}
                 type="tel"
                 label="CPF" 
                 variant="outlined"
@@ -135,7 +163,8 @@ function CadastroDeUsuario() {
           </ReactInputMask>
           <ReactInputMask mask="(99) 9 9999-9999" maskChar="" value={values.telefone} onChange={handleChange} >
             {() => (
-              <CssTextField 
+              <CssTextField
+                error={errors.telefone}
                 type="tel"
                 label="Telefone" 
                 variant="outlined" 
@@ -144,9 +173,10 @@ function CadastroDeUsuario() {
               />
             )}
           </ReactInputMask>
-          <ReactInputMask mask="99/99/9999" maskChar="" value={values.data_nascimento} onChange={handleChange} >
+          <ReactInputMask mask="99/99/9999" maskChar="" value={values.data_nascimento}  onChange={handleChange} >
             {() => (
               <CssTextField 
+                error={errors.data_nascimento}
                 label="Data de nascimento" 
                 variant="outlined" 
                 name="data_nascimento"
@@ -154,7 +184,7 @@ function CadastroDeUsuario() {
               />
             )}
           </ReactInputMask>
-          <FormControl variant="outlined">
+          <FormControl variant="outlined" required>
             <InputLabel id="tipo_de_usuario">
               Tipo de Usuário
             </InputLabel>
@@ -162,6 +192,7 @@ function CadastroDeUsuario() {
               label="Tipo de Usuário"
               labelId="tipo_de_usuario"
               value={values.type}
+              error={errors.type}
               name="type"
               onChange={handleChange}
               required
@@ -171,7 +202,7 @@ function CadastroDeUsuario() {
               <MenuItem value={"consultor"}>Consultores</MenuItem>
             </CssSelect>
           </FormControl>
-          <button type="submit" onClick={e => handleSubmit(e)}>
+          <button type="submit" onClick={handleSubmit}>
             Enviar
           </button>
         </FormUser>
