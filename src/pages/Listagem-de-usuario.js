@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
@@ -11,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import api from "../services/api"
 import { ToastContainer, toast } from 'react-toastify'
+import AddIcon from '@material-ui/icons/Add';
 
 function ListUsers() {
 
@@ -75,7 +77,13 @@ function ListUsers() {
       <Header />
         
       <Container className="container">
-        <h1>Usuários</h1>
+        <div className="row head">
+          <h1>Usuários</h1>
+          <Link exact to="/cadastro-de-usuario">
+            <AddIcon />
+            Novo Usuário
+          </Link>
+        </div>
         <TableContainer component={ Paper }>
           <Table>
             <TableHead>
@@ -118,6 +126,27 @@ function ListUsers() {
 const Container = styled.div`
   width: calc(100% - 250px);
   margin-top: 72px;
+
+  .head {
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 16px;
+      background: #BC090E;
+      color: #FFF;
+      font-size: 14px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+      &:hover {
+        background: #a01216;
+      }
+    }
+  }
 
   h1 {
     color: #043455;
@@ -164,6 +193,21 @@ const Container = styled.div`
     max-width: calc(100% - 72px);
     margin-left: auto;
     margin-right: 0;
+  }
+
+  @media screen and (max-width: 700px) {
+    .head {
+      a {
+        overflow: hidden;
+        width: 40px;
+        white-space: nowrap;
+        justify-content: flex-start;
+        padding: 8px 8px;
+        svg {
+          margin-right: 16px;
+        }
+      }
+    }
   }
 `
 
