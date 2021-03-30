@@ -50,14 +50,26 @@ function CadastroDeUsuario() {
 
   const handleChange = (event) => {
     event.preventDefault()
-    handleValidate()
     setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
   };
 
-  const handleValidate = (event) => {
+  const resetForm = () => {
+    setValues({
+      nome: "",
+      email: "",
+      cpf: "",
+      telefone: "",
+      data_nascimento: "",
+      senha: "",
+      confirm_senha: "",
+      type: ""
+    })
+  }
+
+  const handleValidate = () => {
     let temp = {}
     temp.nome = values.nome.length !== 0 ? "" : "Este campo é obrigatório!"
     temp.email = values.email.length !== 0 && (/\S+@\S+\.\S+/).test(values.email) ? "" : "Email inválido!"
@@ -93,6 +105,9 @@ function CadastroDeUsuario() {
           autoClose: 5000
         })
       })
+      .then(() => {
+        resetForm()
+      })
       .catch(error => {
         console.log(error)
         toast.info('Erro ao se conectar com o servidor!', {
@@ -109,7 +124,7 @@ function CadastroDeUsuario() {
 
       <Container className="container">
         <h1>Cadastro De Usuário</h1>
-        <FormUser onSubmit={e => handleSubmit(e)} autoComplete="off">
+        <FormUser onSubmit={handleSubmit} autoComplete="off">
           <CssTextField 
             error={errors.nome}
             label="Nome" 
