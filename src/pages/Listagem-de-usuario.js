@@ -17,6 +17,7 @@ import AddIcon from '@material-ui/icons/Add';
 function ListUsers() {
 
   const [rows, setRows] = useState([])
+  const [users, setUsers] = useState(null)
 
   function createData(id, name, birth, phone, type, status) {
     return { id, name, birth, phone, type, status}
@@ -39,6 +40,7 @@ function ListUsers() {
         )
       })
       setRows(newRows)
+      setUsers(response.data.data)
     })
     .catch(error => {
       console.log(error)
@@ -57,9 +59,17 @@ function ListUsers() {
       }
       return null
     })
-    api.patch(`/user/${id}`, {
-      status: status === "ativo" ? 0 : 1
+
+    // eslint-disable-next-line
+    let data = users.filter(item => {
+      if (item.id === id) {
+        return item
+      }
     })
+    data = data[0]
+    data.status = status === "ativo" ? 0 : 1
+
+    api.patch(`/user/${id}`, data)
     .then(response => {
       console.log(response)
     })
