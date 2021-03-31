@@ -106,7 +106,7 @@ const Sync = (props) => {
           }
           api.post('/proposal', data)
           .then(() => {
-            db.orcamentos.delete(item.id)
+            
           })
           .catch(error => {
             if (error.response.status === 500) {

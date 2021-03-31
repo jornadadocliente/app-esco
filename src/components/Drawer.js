@@ -73,14 +73,6 @@ const Drawer = (props) => {
     history.push("/")
   }
 
-  function handleCleanOrcamentos( event ) {
-    event.preventDefault()
-    if (window.confirm("Tem certeza que deseja limpar os orçamentos?")) {
-      db.orcamentos.clear()
-      console.log("Orçamentos deletados!")
-    }
-  }
-
   return (
     <Container className={ open ? "opened" : "" } >
       <Hamburger className={ open ? "opened" : "" } onClick={ () => setOpen(!open)} >
@@ -111,10 +103,10 @@ const Drawer = (props) => {
           <HomeRoundedIcon />
           Início
         </NavLink>
-        <button onClick={ event => handleCleanOrcamentos(event) } >
+        <NavLink exact to="/orcamentos" >
           <AccountBalanceWalletOutlinedIcon />
           Orçamentos
-        </button>
+        </NavLink>
         <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')} disabled={!open}>
           <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
             <LanguageIcon />

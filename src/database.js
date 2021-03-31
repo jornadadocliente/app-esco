@@ -14,7 +14,7 @@ db.version(3).stores({
 })
 
 db.version(4).stores({
-  orcamentos: 'id++, user_id, product_id, full_name, product_category_id, email, phone, details'
+  orcamentos: 'id++, user_id, product_name, product_id, full_name, category_name, product_category_id, email, phone, details, status'
 })
 
 export default db;

@@ -82,11 +82,13 @@ const FormOrcamento = (props) => {
         user_id: user[0].id,
         product_id: props?.produtoId,
         full_name: values.nome,
-        product_category_id: values.familia,
+        product_category_id: produto_open?.category.id,
         email: values.email,
         phone: values.telefone,
         details: values.details,
-        produto: values.produto
+        product_name: produto_open?.name,
+        category_name: produto_open?.category.title,
+        status: false
       }
       db.orcamentos.add(data)
       toast.info('Orçamento salvo!', {
