@@ -40,11 +40,12 @@ function Produtos() {
   function handleChoiceProduto(event, produtoId) {
     event.preventDefault();
     // eslint-disable-next-line
-    const SelectedProduct = productsFiltered.map(item => {
+    const SelectedProduct = productsFiltered.filter(item => {
       if (item.id === produtoId) {
         return item
       }
     })
+    console.log(SelectedProduct[0])
     setOpenDetailedProduct(SelectedProduct[0])
 
     if (windowWidth < 760) {

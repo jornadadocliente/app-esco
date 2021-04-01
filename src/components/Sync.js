@@ -104,21 +104,23 @@ const Sync = (props) => {
             phone: item.phone,
             details: item.details
           }
-          api.post('/proposal', data)
-          .then(() => {
-            
-          })
-          .catch(error => {
-            if (error.response.status === 500) {
-              toast.info(`Erro ao enviar o orçamento ${item.id}, verifique sua conexão com a internet!`, {
-                autoClose: 5000
-              })
-            } else {
-              toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {
-                autoClose: 5000
-              })
-            }
-          })
+          if (!item.status) {
+            api.post('/proposal', data)
+            .then(() => {
+              
+            })
+            .catch(error => {
+              if (error.response.status === 500) {
+                toast.info(`Erro ao enviar o orçamento ${item.id}, verifique sua conexão com a internet!`, {
+                  autoClose: 5000
+                })
+              } else {
+                toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {
+                  autoClose: 5000
+                })
+              }
+            })
+          }
         })
       } catch (error) {
         toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {

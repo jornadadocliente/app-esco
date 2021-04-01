@@ -42,21 +42,23 @@ function ListOrcamentos() {
         phone: item.phone,
         details: item.details
       }
-      api.post("/proposal", data)
-      .then(() => {
-        db.orcamentos.update(item.id, {status: true})
-      })
-      .catch(error => {
-        if (error.response.status === 500) {
-          toast.info(`Erro ao enviar o orçamento ${item.id}, verifique sua conexão com a internet!`, {
-            autoClose: 5000
-          })
-        } else {
-          toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {
-            autoClose: 5000
-          })
-        }
-      })
+      if (item.status === false) {
+        api.post("/proposal", data)
+        .then(() => {
+          db.orcamentos.update(item.id, {status: true})
+        })
+        .catch(error => {
+          if (error.response.status === 500) {
+            toast.info(`Erro ao enviar o orçamento ${item.id}, verifique sua conexão com a internet!`, {
+              autoClose: 5000
+            })
+          } else {
+            toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {
+              autoClose: 5000
+            })
+          }
+        })
+      }
     })
   }
 
@@ -100,13 +102,13 @@ function ListOrcamentos() {
                   <TableCell>{row.product_name}</TableCell>
                   <TableCell>{row.category_name}</TableCell>
                   <TableCell>{row.status ? "Enviado" : "Pendente"}</TableCell>
-                  { !row.status ? (
-                    <TableCell>
+                  <TableCell>
+                    { !row.status ? (
                       <button onClick={ e => handleDelete(e, row.id) } className="inativo" >
                         <DeleteIcon />
                       </button>
-                    </TableCell>
-                  ) : null}
+                    ) : null}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import db from '../database'
 import { useLiveQuery } from 'dexie-react-hooks'
@@ -42,6 +42,9 @@ const FormOrcamento = (props) => {
   const categories = useLiveQuery(
     () => db.categories.toArray()
   )
+  const produtos = useLiveQuery(
+    () => db.products.toArray()
+  )
   
   const produto_open = props?.produto
 
@@ -50,8 +53,10 @@ const FormOrcamento = (props) => {
     email: "",
     telefone: "",
     produto: "",
+    produtoId: "",
     familia: "",
-    details: ""
+    details: "",
+    category_title: ""
   })
   const [errors, setErrors] = useState({})
 
@@ -75,19 +80,43 @@ const FormOrcamento = (props) => {
     });
   };
 
+  useEffect(() => {
+    const newCategory = categories?.filter(item => {
+      return values.familia === item.id
+    })
+    setValues({
+      ...values,
+      // eslint-disable-next-line
+      ["category_title"]: newCategory ? newCategory[0].title : ""
+    })
+    // eslint-disable-next-line
+  }, [values.familia])
+
+  useEffect(() => {
+    const newProduto = produtos?.filter(item => {
+      return values.produtoId === item.id
+    })
+    setValues({
+      ...values,
+      // eslint-disable-next-line
+      ["nome"]: newProduto ? newProduto[0].name : ""
+    })
+    // eslint-disable-next-line
+  }, [values.produtoId])
+
   function handleSubmit(e) {
     e.preventDefault();
     if (handleValidate()) {
       let data = {
         user_id: user[0].id,
-        product_id: props?.produtoId,
+        product_id: props.produtoId ? props.produtoId : values.produtoId,
         full_name: values.nome,
-        product_category_id: produto_open?.category.id,
+        product_category_id: produto_open ? produto_open.category.id : values.familia,
         email: values.email,
         phone: values.telefone,
         details: values.details,
-        product_name: produto_open?.name,
-        category_name: produto_open?.category.title,
+        product_name: produto_open ? produto_open.name : values.nome,
+        category_name: produto_open ? produto_open.category.title : values.category_title,
         status: false
       }
       db.orcamentos.add(data)
@@ -173,7 +202,50 @@ const FormOrcamento = (props) => {
             </CssSelect>
           </FormControl>
         </>
-      ) : null}
+      ) : (
+        <>
+          <FormControl variant="outlined" required>
+            <InputLabel id="produtoId">
+              Produto
+            </InputLabel>
+            <CssSelect
+              label="Família do Produto"
+              labelId="produtoId"
+              value={values.produtoId}
+              name="produtoId"
+              onChange={handleChange}
+              required
+            >
+              <MenuItem value={null} disabled >Produto</MenuItem>
+              {produtos?.map(item => {
+                return (
+                  <MenuItem value={item.id}>{ item.name }</MenuItem>
+                )
+              })}
+            </CssSelect>
+          </FormControl>
+          <FormControl variant="outlined" required>
+            <InputLabel id="familia_do_produto">
+              Família do Produto
+            </InputLabel>
+            <CssSelect
+              label="Família do Produto"
+              labelId="familia_do_produto"
+              value={values.familia}
+              name="familia"
+              onChange={handleChange}
+              required
+            >
+              <MenuItem value={null} disabled >Família do Produto</MenuItem>
+              {categories?.map(item => {
+                return (
+                  <MenuItem value={item.id}>{ item.title }</MenuItem>
+                )
+              })}
+            </CssSelect>
+          </FormControl>
+        </>
+      )}
       <CssTextField 
         label="Dê mais detalhes sobre o seu orçamento" 
         variant="outlined" 

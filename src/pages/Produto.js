@@ -534,6 +534,16 @@ const Principal = styled.div`
     }
   }
 
+  @media screen and (max-width: 1024px) {
+    .content {
+      &__image {
+        img {
+          right: -80px;
+        }
+      }
+    }
+  }
+
   @media screen and (max-width: 800px) {
     flex-wrap: wrap;
     flex-direction: column-reverse;

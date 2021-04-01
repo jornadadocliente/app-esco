@@ -103,10 +103,20 @@ const Drawer = (props) => {
           <HomeRoundedIcon />
           Início
         </NavLink>
-        <NavLink exact to="/orcamentos" >
-          <AccountBalanceWalletOutlinedIcon />
-          Orçamentos
-        </NavLink>
+        <Accordion square expanded={expanded === 'panel4'} onChange={handleChange('panel4')} disabled={!open}>
+          <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
+            <AccountBalanceWalletOutlinedIcon />
+            Orçamentos
+          </AccordionSummary>
+          <AccordionDetails>
+            <NavLink exact to="/orcamentos" >
+              Orçamentos
+            </NavLink>
+            <NavLink exact to="/novo-orcamento" >
+              Novo Orçamento
+            </NavLink>
+          </AccordionDetails>
+        </Accordion>
         <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')} disabled={!open}>
           <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
             <LanguageIcon />
