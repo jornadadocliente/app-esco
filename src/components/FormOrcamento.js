@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import db from '../database'
 import { useLiveQuery } from 'dexie-react-hooks'
@@ -39,39 +39,91 @@ const FormOrcamento = (props) => {
   const user = useLiveQuery(
     () => db.user.toArray()
   )
+  const categories = useLiveQuery(
+    () => db.categories.toArray()
+  )
+  const produtos = useLiveQuery(
+    () => db.products.toArray()
+  )
+  
+  const produto_open = props?.produto
 
   const [values, setValues] = useState({
     nome: "",
     email: "",
     telefone: "",
     produto: "",
+    produtoId: "",
     familia: "",
-    details: ""
+    details: "",
+    category_title: ""
   })
+  const [errors, setErrors] = useState({})
+
+  const handleValidate = () => {
+    let temp = {}
+    temp.nome = values.nome.length !== 0 ? "" : "Este campo é obrigatório!"
+    temp.email = values.email.length !== 0 && (/\S+@\S+\.\S+/).test(values.email) ? "" : "Email inválido!"
+    temp.telefone = values.telefone.length !== 0 ? "" : "Este campo é obrigatório!"
+    setErrors({
+      ...temp
+    })
+
+    return Object.values(temp).every(x => x === "")
+  }
 
   const handleChange = (event) => {
+    handleValidate()
     setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
   };
 
+  useEffect(() => {
+    const newCategory = categories?.filter(item => {
+      return values.familia === item.id
+    })
+    setValues({
+      ...values,
+      // eslint-disable-next-line
+      ["category_title"]: newCategory ? newCategory[0].title : ""
+    })
+    // eslint-disable-next-line
+  }, [values.familia])
+
+  useEffect(() => {
+    const newProduto = produtos?.filter(item => {
+      return values.produtoId === item.id
+    })
+    setValues({
+      ...values,
+      // eslint-disable-next-line
+      ["nome"]: newProduto ? newProduto[0].name : ""
+    })
+    // eslint-disable-next-line
+  }, [values.produtoId])
+
   function handleSubmit(e) {
     e.preventDefault();
-    let data = {
-      user_id: user[0].id,
-      product_id: props?.produtoId,
-      full_name: values.nome,
-      product_category_id: values.familia,
-      email: values.email,
-      phone: values.telefone,
-      details: values.details,
-      produto: values.produto
+    if (handleValidate()) {
+      let data = {
+        user_id: user[0].id,
+        product_id: props.produtoId ? props.produtoId : values.produtoId,
+        full_name: values.nome,
+        product_category_id: produto_open ? produto_open.category.id : values.familia,
+        email: values.email,
+        phone: values.telefone,
+        details: values.details,
+        product_name: produto_open ? produto_open.name : values.nome,
+        category_name: produto_open ? produto_open.category.title : values.category_title,
+        status: false
+      }
+      db.orcamentos.add(data)
+      toast.info('Orçamento salvo!', {
+        autoClose: 5000
+      })
     }
-    db.orcamentos.add(data)
-    toast.info('Orçamento salvo!', {
-      autoClose: 5000
-    })
   }
 
   return (
@@ -82,6 +134,7 @@ const FormOrcamento = (props) => {
         variant="outlined" 
         name="nome" 
         value={values.nome}
+        error={errors.nome}
         onChange={handleChange}
         required
         />
@@ -92,6 +145,7 @@ const FormOrcamento = (props) => {
             variant="outlined" 
             name="email" 
             value={values.email}
+            error={errors.email}
             onChange={handleChange}
             required
             />
@@ -100,6 +154,7 @@ const FormOrcamento = (props) => {
           <ReactInputMask mask="(99) 9 9999-9999" maskChar="" value={values.telefone} onChange={handleChange} >
             {() => (
               <CssTextField 
+                error={errors.telefone}
                 type="tel"
                 label="Telefone" 
                 variant="outlined" 
@@ -114,33 +169,83 @@ const FormOrcamento = (props) => {
       <Divider />
 
       <h2>Informações de Produto</h2>
-      <CssTextField 
-        label="Produto" 
-        variant="outlined" 
-        name="produto" 
-        value={values.produto}
-        onChange={handleChange}
-        required
-        />
-      <FormControl variant="outlined" required>
-        <InputLabel id="familia_do_produto">
-          Família do Produto
-        </InputLabel>
-        <CssSelect
-          label="Família do Produto"
-          labelId="familia_do_produto"
-          value={values.familia}
-          name="familia"
-          onChange={handleChange}
-          required
-        >
-          <MenuItem value={null} disabled >Família do Produto</MenuItem>
-          <MenuItem value={1}>Báscula</MenuItem>
-          <MenuItem value={2}>Chapa de Desgaste</MenuItem>
-          <MenuItem value={3}>Gets</MenuItem>
-          <MenuItem value={4}>Kwik Lok</MenuItem>
-        </CssSelect>
-      </FormControl>
+      {produto_open ? (
+        <>
+          <CssTextField 
+            label="Produto" 
+            variant="outlined" 
+            name="produto" 
+            value={produto_open?.name}
+            disabled
+            onChange={handleChange}
+            required
+            />
+          <FormControl variant="outlined" required>
+            <InputLabel id="familia_do_produto">
+              Família do Produto
+            </InputLabel>
+            <CssSelect
+              label="Família do Produto"
+              labelId="familia_do_produto"
+              value={produto_open?.category.id}
+              name="familia"
+              onChange={handleChange}
+              required
+              disabled
+            >
+              <MenuItem value={null} disabled >Família do Produto</MenuItem>
+              {categories?.map(item => {
+                return (
+                  <MenuItem value={item.id}>{ item.title }</MenuItem>
+                )
+              })}
+            </CssSelect>
+          </FormControl>
+        </>
+      ) : (
+        <>
+          <FormControl variant="outlined" required>
+            <InputLabel id="produtoId">
+              Produto
+            </InputLabel>
+            <CssSelect
+              label="Família do Produto"
+              labelId="produtoId"
+              value={values.produtoId}
+              name="produtoId"
+              onChange={handleChange}
+              required
+            >
+              <MenuItem value={null} disabled >Produto</MenuItem>
+              {produtos?.map(item => {
+                return (
+                  <MenuItem value={item.id}>{ item.name }</MenuItem>
+                )
+              })}
+            </CssSelect>
+          </FormControl>
+          <FormControl variant="outlined" required>
+            <InputLabel id="familia_do_produto">
+              Família do Produto
+            </InputLabel>
+            <CssSelect
+              label="Família do Produto"
+              labelId="familia_do_produto"
+              value={values.familia}
+              name="familia"
+              onChange={handleChange}
+              required
+            >
+              <MenuItem value={null} disabled >Família do Produto</MenuItem>
+              {categories?.map(item => {
+                return (
+                  <MenuItem value={item.id}>{ item.title }</MenuItem>
+                )
+              })}
+            </CssSelect>
+          </FormControl>
+        </>
+      )}
       <CssTextField 
         label="Dê mais detalhes sobre o seu orçamento" 
         variant="outlined" 
@@ -149,7 +254,6 @@ const FormOrcamento = (props) => {
         onChange={handleChange}
         multiline
         rows={6}
-        required
         />
       
       <SubmitContent type="submit" onClick={ e => handleSubmit(e) }>

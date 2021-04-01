@@ -8,9 +8,15 @@ import db from '../database'
 import { useLiveQuery } from 'dexie-react-hooks'
 import SeloDeSucesso from '../components/SeloDeSucesso'
 import { HashLink } from 'react-router-hash-link';
+import { Player } from 'video-react'
+import "../../node_modules/video-react/dist/video-react.css"
 
 import ReasonsIcon from '../images/reasons-icon.svg'
 import Quote from '../images/quote.svg'
+
+import ImageTree from '../images/image-tree.png'
+import FullVideo from '../videos/ESCO® Nemisys® Lip System for Wheel Loaders.mp4'
+import ThumbVideo from '../images/poster_video.png'
 
 function Produto() {
   const { id } = useParams()
@@ -74,17 +80,16 @@ function Produto() {
             <h1>
               { produto?.title_tree }
             </h1>
-            <img src={ produto?.image_tree } alt=" " />
+            <img src={ ImageTree } alt=" " />
+            {/* <img src={ produto?.image_tree } alt=" " /> */}
           </Tree>
 
           <Video>
-          <iframe src={ produto?.full_video } 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen
-          >
-          </iframe>
+            <Player 
+              playsInline
+              poster={ ThumbVideo }
+              src={ FullVideo }
+            />
           </Video>
 
           <Reasons>
@@ -175,7 +180,7 @@ function Produto() {
           </AnchorLink>
         </section>
 
-        <FormOrcamento id="solicitar-orcamento" produtoId={produto?.id} />
+        <FormOrcamento id="solicitar-orcamento" produtoId={produto?.id} produto={ produto ? produto : null } />
       </Container>
 
     </div>
@@ -393,6 +398,10 @@ const Reasons = styled.div`
   }
 
   @media screen and (max-width: 414px) {
+    h2 {
+      font-size: 28px;
+    }
+    
     ul {
       li {
         width: 100%;
@@ -426,9 +435,10 @@ const Tree = styled.div`
   h1 {
     position: relative;
     width: 300px;
+    max-width: 100%;
     font-size: 24px;
     color: #043455;
-    margin-bottom: -50px;
+    margin-bottom: -30px;
     z-index: 2;
   }
 
@@ -534,6 +544,16 @@ const Principal = styled.div`
     }
   }
 
+  @media screen and (max-width: 1024px) {
+    .content {
+      &__image {
+        img {
+          right: -80px;
+        }
+      }
+    }
+  }
+
   @media screen and (max-width: 800px) {
     flex-wrap: wrap;
     flex-direction: column-reverse;
@@ -546,6 +566,7 @@ const Principal = styled.div`
         img {
           position: static;
           top: 0;
+          right: 0;
           display: flex;
           margin-left: auto;
         }
@@ -576,6 +597,7 @@ const Container = styled.div`
     margin-left: auto;
     margin-right: 0;
     overflow: auto;
+    overflow-x: hidden;
   }
 `
 

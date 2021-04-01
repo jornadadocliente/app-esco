@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
+import db from '../database'
+import { useLiveQuery } from 'dexie-react-hooks'
+import api from "../services/api"
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,75 +12,61 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import api from "../services/api"
 import { ToastContainer, toast } from 'react-toastify'
-import AddIcon from '@material-ui/icons/Add';
+import EmailIcon from '@material-ui/icons/Email';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-function ListUsers() {
+function ListOrcamentos() {
 
   const [rows, setRows] = useState([])
-  const [users, setUsers] = useState(null)
-
-  function createData(id, name, birth, phone, type, status) {
-    return { id, name, birth, phone, type, status}
-  }
+  const orcamentos = useLiveQuery(
+    () => db.orcamentos.toArray()
+  )
 
   useEffect(() => {
-    api.get('/users')
-    .then(response => {
-      let newRows = []
-      response.data.data.map(item => {
-        return (
-          newRows.push(createData(
-            item.id,
-            item.name,
-            item.birth_date,
-            item.phone,
-            item.type,
-            item.status === 1 ? "ativo" : "inativo"
-          ))
-        )
-      })
-      setRows(newRows)
-      setUsers(response.data.data)
-    })
-    .catch(error => {
-      console.log(error)
-      toast.info('Erro ao se conectar com o servidor!', {
-        autoClose: 5000
-      })
-    })
-  }, [])
+    if (orcamentos) {
+      setRows(orcamentos)
+    }
+  }, [orcamentos])
 
-  const handleActive = (e, id) => {
-    e.preventDefault();
-    let status = ""
-    rows.map(item => {
-      if (item.id === id) {
-        status = item.status
-      }
-      return null
-    })
-
+  const handleSendOrcamentos = (e) => {
+    e.preventDefault()
     // eslint-disable-next-line
-    let data = users.filter(item => {
-      if (item.id === id) {
-        return item
+    orcamentos.map(item => {
+      const data = {
+        user_id: item.user_id,
+        product_id: item.product_id,
+        full_name: item.full_name,
+        product_category_id: item.product_category_id,
+        email: item.email,
+        phone: item.phone,
+        details: item.details
+      }
+      if (item.status === false) {
+        api.post("/proposal", data)
+        .then(() => {
+          db.orcamentos.update(item.id, {status: true})
+        })
+        .catch(error => {
+          if (error.response.status === 500) {
+            toast.info(`Erro ao enviar o orçamento ${item.id}, verifique sua conexão com a internet!`, {
+              autoClose: 5000
+            })
+          } else {
+            toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {
+              autoClose: 5000
+            })
+          }
+        })
       }
     })
-    data = data[0]
-    data.status = status === "ativo" ? 0 : 1
+  }
 
-    api.patch(`/user/${id}`, data)
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-      toast.info('Erro ao se conectar com o servidor!', {
-        autoClose: 5000
-      })
-    })
+  const handleDelete = (e, orcamentoId) => {
+    e.preventDefault();
+    if (window.confirm(`Tem certeza que deseja remover o orçamento ${orcamentoId}?`)) {
+      db.orcamentos.delete(orcamentoId)
+    }
   }
 
   return (
@@ -88,34 +76,38 @@ function ListUsers() {
         
       <Container className="container">
         <div className="row head">
-          <h1>Usuários</h1>
-          <Link exact to="/cadastro-de-usuario">
-            <AddIcon />
-            Novo Usuário
-          </Link>
+          <h1>Orçamentos</h1>
+          <button onClick={ handleSendOrcamentos } >
+            <EmailIcon />
+            Enviar Todos
+          </button>
         </div>
         <TableContainer component={ Paper }>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Nome</TableCell>
-                <TableCell>Data de Nascimento</TableCell>
-                <TableCell>Telefone</TableCell>
-                <TableCell>Tipo de Usuário</TableCell>
+                <TableCell>#</TableCell>
+                <TableCell>Cliente</TableCell>
+                <TableCell>Produto</TableCell>
+                <TableCell>Categoria</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.length > 0 && rows.map(row => (
                 <TableRow key={row.id}>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.birth}</TableCell>
-                  <TableCell>{row.phone}</TableCell>
-                  <TableCell style={{ textTransform: "capitalize" }}>{row.type}</TableCell>
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{row.full_name}</TableCell>
+                  <TableCell>{row.product_name}</TableCell>
+                  <TableCell>{row.category_name}</TableCell>
+                  <TableCell>{row.status ? "Enviado" : "Pendente"}</TableCell>
                   <TableCell>
-                    <button onClick={ e => handleActive(e, row.id) } className={row.status} >
-                      {row.status}
-                    </button>
+                    { !row.status ? (
+                      <button onClick={ e => handleDelete(e, row.id) } className="inativo" >
+                        <DeleteIcon />
+                      </button>
+                    ) : null}
                   </TableCell>
                 </TableRow>
               ))}
@@ -141,7 +133,8 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    a {
+    button {
+      border: none;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -151,7 +144,11 @@ const Container = styled.div`
       font-size: 14px;
       text-decoration: none;
       border-radius: 4px;
+      font-weight: 600;
       transition: background-color 0.3s;
+      svg {
+        margin-right: 8px;
+      }
       &:hover {
         background: #a01216;
       }
@@ -182,8 +179,13 @@ const Container = styled.div`
       font-weight: 600;
       color: #FFF;
       text-transform: capitalize;
+      font-size: 10px;
       cursor: pointer;
       transition: background-color 0.4s;
+
+      svg {
+        height: 20px;
+      }
 
       &:hover {
         background: #427942;
@@ -207,7 +209,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 700px) {
     .head {
-      a {
+      button {
         overflow: hidden;
         width: 40px;
         white-space: nowrap;
@@ -221,4 +223,4 @@ const Container = styled.div`
   }
 `
 
-export default ListUsers;
+export default ListOrcamentos;

@@ -11,6 +11,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CadastroDeUsuario from './pages/Cadastro-de-usuario';
 import ListaDeUsuario from './pages/Listagem-de-usuario';
+import ListaOrcamentos from './pages/Orcamentos';
+import NovoOrcamento from './pages/Novo-orcamento';
 import Produtos from './pages/Produtos';
 import ProdutoUnico from './pages/Produto';
 
@@ -23,6 +25,10 @@ ReactDOM.render(
         <Route path="/dashboard" exact={true} component={Dashboard} />
         <Route path="/cadastro-de-usuario" exact={true} component={CadastroDeUsuario} />
         <Route path="/lista-de-usuario" exact={true} component={ListaDeUsuario} />
+
+        {/* Lista os Orçamentos */}
+        <Route path="/orcamentos" exact={true} component={ListaOrcamentos} />
+        <Route path="/novo-orcamento" exact={true} component={NovoOrcamento} />
         
         {/* Rotas de produtos dinâmicas */}
         <Route path="/produtos/:search" component={Produtos} />

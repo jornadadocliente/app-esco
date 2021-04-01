@@ -1,19 +1,23 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import LogoAzul from '../images/logo_azul.png'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const Header = (props) => {
 
+  const history = useHistory()
+
   return (
     <Container>
+      <button onClick={history.goBack}>
+        <ArrowBackIcon />
+        Voltar
+      </button>
       <Link to="/dashboard">
         <img src={ LogoAzul } alt="" />
       </Link>
-      <button disabled>
-        ?
-      </button>
     </Container>
   )
 }
@@ -38,14 +42,19 @@ const Container = styled.div`
   }
 
   button {
-    width: 25px;
-    height: 25px;
-    border: 2px solid #BC080D;
-    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    width: max-content;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
     background: transparent;
-    display: grid;
-    align-content: center;
     color: #BC080D;
+    transition: background-color 0.3s;
+    &:hover {
+      background: #fff0f0;
+    }
   }
 `
 
