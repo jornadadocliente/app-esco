@@ -8,11 +8,15 @@ import db from '../database'
 import { useLiveQuery } from 'dexie-react-hooks'
 import SeloDeSucesso from '../components/SeloDeSucesso'
 import { HashLink } from 'react-router-hash-link';
+import { Player } from 'video-react'
+import "../../node_modules/video-react/dist/video-react.css"
 
 import ReasonsIcon from '../images/reasons-icon.svg'
 import Quote from '../images/quote.svg'
 
 import ImageTree from '../images/image-tree.png'
+import FullVideo from '../videos/ESCO® Nemisys® Lip System for Wheel Loaders.mp4'
+import ThumbVideo from '../images/poster_video.png'
 
 function Produto() {
   const { id } = useParams()
@@ -81,13 +85,11 @@ function Produto() {
           </Tree>
 
           <Video>
-          <iframe src={ produto?.full_video } 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen
-          >
-          </iframe>
+            <Player 
+              playsInline
+              poster={ ThumbVideo }
+              src={ FullVideo }
+            />
           </Video>
 
           <Reasons>
@@ -396,6 +398,10 @@ const Reasons = styled.div`
   }
 
   @media screen and (max-width: 414px) {
+    h2 {
+      font-size: 28px;
+    }
+    
     ul {
       li {
         width: 100%;
@@ -429,6 +435,7 @@ const Tree = styled.div`
   h1 {
     position: relative;
     width: 300px;
+    max-width: 100%;
     font-size: 24px;
     color: #043455;
     margin-bottom: -30px;
