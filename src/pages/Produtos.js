@@ -8,6 +8,8 @@ import db from '../database'
 import { useLiveQuery } from 'dexie-react-hooks'
 
 // Imagens
+import MinaIcon from "../images/mina-icon.svg"
+import EscavadeiraIcon from "../images/escavadeira-icon.svg"
 
 function Produtos() {
   const { search } = useParams()
@@ -104,14 +106,16 @@ function Produtos() {
               <div>
                 <h6>Tipo de Máquina:</h6>
                 <div>
-                  <img src={openDetailedProduct.detailed.machine_type.icon} alt="" />
+                  <img src={EscavadeiraIcon} alt="" />
+                  {/* <img src={openDetailedProduct.detailed.machine_type.icon} alt="" /> */}
                 </div>
                 <p>{openDetailedProduct.detailed.machine_type.name}</p>
               </div>
               <div>
                 <h6>Aplicação:</h6>
                 <div>
-                  <img src={openDetailedProduct.detailed.application.icon} alt="" />
+                  <img src={MinaIcon} alt="" />
+                  {/* <img src={openDetailedProduct.detailed.application.icon} alt="" /> */}
                 </div>
                 <p>{openDetailedProduct.detailed.application.name}</p>
               </div>

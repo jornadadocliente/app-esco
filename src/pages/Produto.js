@@ -12,6 +12,8 @@ import { HashLink } from 'react-router-hash-link';
 import ReasonsIcon from '../images/reasons-icon.svg'
 import Quote from '../images/quote.svg'
 
+import ImageTree from '../images/image-tree.png'
+
 function Produto() {
   const { id } = useParams()
   const products = useLiveQuery(
@@ -74,7 +76,8 @@ function Produto() {
             <h1>
               { produto?.title_tree }
             </h1>
-            <img src={ produto?.image_tree } alt=" " />
+            <img src={ ImageTree } alt=" " />
+            {/* <img src={ produto?.image_tree } alt=" " /> */}
           </Tree>
 
           <Video>
@@ -428,7 +431,7 @@ const Tree = styled.div`
     width: 300px;
     font-size: 24px;
     color: #043455;
-    margin-bottom: -50px;
+    margin-bottom: -30px;
     z-index: 2;
   }
 
@@ -556,6 +559,7 @@ const Principal = styled.div`
         img {
           position: static;
           top: 0;
+          right: 0;
           display: flex;
           margin-left: auto;
         }
@@ -586,6 +590,7 @@ const Container = styled.div`
     margin-left: auto;
     margin-right: 0;
     overflow: auto;
+    overflow-x: hidden;
   }
 `
 
