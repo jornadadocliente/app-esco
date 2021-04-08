@@ -71,7 +71,14 @@ function ListUsers() {
 
     api.patch(`/user/${id}`, data)
     .then(response => {
-      console.log(response)
+      let newRows = rows
+      newRows.map(item => {
+        if (item.id === id) {
+          item.status = response.data.data.status === 0 ? "inativo" : "ativo"
+        }
+        return null
+      })
+      setRows([...newRows])
     })
     .catch(error => {
       console.log(error)
