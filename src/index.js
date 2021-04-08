@@ -15,6 +15,7 @@ import ListaOrcamentos from './pages/Orcamentos';
 import NovoOrcamento from './pages/Novo-orcamento';
 import Produtos from './pages/Produtos';
 import ProdutoUnico from './pages/Produto';
+import ResetPassword from './pages/Reset-password';
 
 ReactDOM.render(
   <>
@@ -25,6 +26,9 @@ ReactDOM.render(
         <Route path="/dashboard" exact={true} component={Dashboard} />
         <Route path="/cadastro-de-usuario" exact={true} component={CadastroDeUsuario} />
         <Route path="/lista-de-usuario" exact={true} component={ListaDeUsuario} />
+
+        {/* Resetar Senha */}
+        <Route path="/recover-password" exact={true} component={ResetPassword} />
 
         {/* Lista os Orçamentos */}
         <Route path="/orcamentos" exact={true} component={ListaOrcamentos} />
