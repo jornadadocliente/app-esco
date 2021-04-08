@@ -13,7 +13,6 @@ const Header = (props) => {
     <Container>
       <button onClick={history.goBack}>
         <ArrowBackIcon />
-        Voltar
       </button>
       <Link to="/dashboard">
         <img src={ LogoAzul } alt="" />
