@@ -62,6 +62,40 @@ function ListOrcamentos() {
     })
   }
 
+  const handleSendUnique = (e, id) => {
+    e.preventDefault();
+
+    const orcamentoToSend = orcamentos.filter(item => {
+      return item.id === id
+    })
+
+    const data = {
+      user_id: orcamentoToSend[0].user_id,
+      product_id: orcamentoToSend[0].product_id,
+      full_name: orcamentoToSend[0].full_name,
+      product_category_id: orcamentoToSend[0].product_category_id,
+      email: orcamentoToSend[0].email,
+      phone: orcamentoToSend[0].phone,
+      details: orcamentoToSend[0].details
+    }
+
+    api.post("/proposal", data)
+    .then(() => {
+      db.orcamentos.update(orcamentoToSend[0].id, {status: true})
+    })
+    .catch(error => {
+      if (error.response.status === 500) {
+        toast.info(`Erro ao enviar o orçamento ${orcamentoToSend[0].id}, verifique sua conexão com a internet!`, {
+          autoClose: 5000
+        })
+      } else {
+        toast.info('Você parece está sem internet, conecte-se para enviar seus orçamentos!', {
+          autoClose: 5000
+        })
+      }
+    })
+  }
+
   const handleDelete = (e, orcamentoId) => {
     e.preventDefault();
     if (window.confirm(`Tem certeza que deseja remover o orçamento ${orcamentoId}?`)) {
@@ -92,6 +126,7 @@ function ListOrcamentos() {
                 <TableCell>Categoria</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell></TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -106,6 +141,13 @@ function ListOrcamentos() {
                     { !row.status ? (
                       <button onClick={ e => handleDelete(e, row.id) } className="inativo" >
                         <DeleteIcon />
+                      </button>
+                    ) : null}
+                  </TableCell>
+                  <TableCell>
+                    { !row.status ? (
+                      <button onClick={ e => handleSendUnique(e, row.id) } className="ativo" >
+                        <EmailIcon />
                       </button>
                     ) : null}
                   </TableCell>
