@@ -14,9 +14,9 @@ const FilterAdvanced = (props) => {
 
   return (
     <>
-      <ShowFilter onClick={() => setShowFilter(true)}>
+      {/* <ShowFilter onClick={() => setShowFilter(true)}>
         <TuneIcon /> Filtro Avançado
-      </ShowFilter>
+      </ShowFilter> */}
 
       <Container className={showFilter ? 'show' : ''}>
         <div className="container">
@@ -242,33 +242,33 @@ const Container = styled.div`
   }
 `
 
-const ShowFilter = styled.div`
-  color: #043455;
-  font-size: 14px;
-  padding: 8px 16px;
-  margin: 8px 0 8px 8px;
-  border-radius: 4px;
-  align-items: center;
-  display: flex;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.5s;
+// const ShowFilter = styled.div`
+//   color: #043455;
+//   font-size: 14px;
+//   padding: 8px 16px;
+//   margin: 8px 0 8px 8px;
+//   border-radius: 4px;
+//   align-items: center;
+//   display: flex;
+//   text-decoration: none;
+//   cursor: pointer;
+//   transition: all 0.5s;
 
-  &:hover {
-    background-color: #04345526;
-  }
+//   &:hover {
+//     background-color: #04345526;
+//   }
 
-  @media screen and (max-width: 760px) {
-    color: transparent; 
-    overflow: hidden;
-    width: 60px;
-    margin: 0;
-    padding: 2px 16px;
-    svg {
-      color: #043455;
-    }
-  }
-`
+//   @media screen and (max-width: 760px) {
+//     color: transparent; 
+//     overflow: hidden;
+//     width: 60px;
+//     margin: 0;
+//     padding: 2px 16px;
+//     svg {
+//       color: #043455;
+//     }
+//   }
+// `
 
 const CloseFilter = styled.div`
   position: absolute;

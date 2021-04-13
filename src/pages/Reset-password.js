@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLocation, useHistory, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css'
@@ -8,14 +9,79 @@ import LogoImg from '../images/logo_esco.png'
 
 
 function ResetPassword() {
+  const location = useLocation()
+  const history = useHistory()
 
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
   const [repeatSenha, setRepeatSenha] = useState("")
+  const [token, setToken] = useState(null)
+
+  useEffect(() => {
+    const params = location.search
+    const token = params.split("=")[1]
+    setToken(token ? token : null)
+  }, [location])
+
+  useEffect(() => {
+    if (token) {
+      axios.get(`https://app-esco.mageda.com.br/api/user/recover-password/${token}`)
+      .then(response => {
+        setEmail(response.data.data.email)
+      })
+      .catch(() => {
+        toast.info('Token inválido, solicite um novo token!', {
+          autoClose: 5000
+        })
+      })
+    }
+  }, [token])
 
   function handleSubmit(event) {
     event.preventDefault()
-    
+    if (senha === repeatSenha) {
+      const data = {
+        token: token,
+        email: email,
+        new_password: senha
+      }
+      axios.post('https://app-esco.mageda.com.br/api/user/recover-password', data)
+      .then(response => {
+        const dataLogin = {
+          email: response.data.data.email,
+          password: senha
+        }
+        axios.post('https://app-esco.mageda.com.br/api/auth/login', dataLogin)
+        .then(response => {
+          window.localStorage.setItem('esco_token', response.data.access_token)
+          window.localStorage.setItem('esco_user_id', response.data.user.id)
+          toast.info('Bem-Vindo!', {
+            autoClose: 5000
+          })
+          history.push("/dashboard")
+        })
+        .catch(error => {
+          if (error.response?.status === 401) {
+            toast.info('Usuário ou senha incorreto!', {
+              autoClose: 5000
+            })
+          } else {
+            toast.info('Erro ao se conectar com o servidor!', {
+              autoClose: 5000
+            })
+          }
+        })
+      })
+      .catch(() => {
+        toast.info("Erro ao se conectar com o servidor, verifique sua internet!", {
+          autoClose: 5000
+        })
+      })
+    } else {
+      toast.info('As senhas estão divergentes, corrija e tente novamente!', {
+        autoClose: 5000
+      })
+    }
   }
 
   return (
@@ -23,7 +89,9 @@ function ResetPassword() {
       <div className="container">
         <div className="row">
           <Logo>
-            <img src={LogoImg} alt="Esco" width={250} height={ 154 } />
+            <Link to="/">
+              <img src={LogoImg} alt="Esco" width={250} height={ 154 } />
+            </Link>
           </Logo>
           <LoginCard>
             <h2>
@@ -38,6 +106,7 @@ function ResetPassword() {
                 placeholder="Digite seu e-mail Esco" 
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
+                disabled
               />
               <label htmlFor="password">Nova senha</label>
               <input 
@@ -50,7 +119,7 @@ function ResetPassword() {
               />
               <label htmlFor="password">Repita a nova senha</label>
               <input 
-                type="new_password" 
+                type="password" 
                 id="new_password" 
                 name="new_password" 
                 placeholder="Digite sua nova senha novamente" 
@@ -133,7 +202,7 @@ const LoginCard = styled.div`
     input {
       padding: 16px 24px;
       background-color: rgba(176,176,176,0.1);
-      color: #B0B0B0;
+      color: #333;
       border-radius: 3px;
       border: none;
     }
