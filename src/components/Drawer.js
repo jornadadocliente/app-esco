@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, NavLink, useHistory } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -63,6 +63,9 @@ const Drawer = (props) => {
   const categories = useLiveQuery(
     () => db.categories.toArray()
   )
+  const user = useLiveQuery(
+    () => db.user.toArray()
+  )
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -91,9 +94,9 @@ const Drawer = (props) => {
           </div>
           <div className="profile__text">
             <p>Bem-vindo de volta.</p>
-            <Link to="/dashboard" >
+            {/* <Link to="/dashboard" >
               Ver Perfil
-            </Link>
+            </Link> */}
           </div>
         </div>
       </Profile>
@@ -109,11 +112,11 @@ const Drawer = (props) => {
             Orçamentos
           </AccordionSummary>
           <AccordionDetails>
-            <NavLink exact to="/orcamentos" >
-              Orçamentos
-            </NavLink>
             <NavLink exact to="/novo-orcamento" >
-              Novo Orçamento
+              Novo
+            </NavLink>
+            <NavLink exact to="/orcamentos" >
+              Histórico
             </NavLink>
           </AccordionDetails>
         </Accordion>
@@ -130,20 +133,22 @@ const Drawer = (props) => {
             ))}
           </AccordionDetails>
         </Accordion>
-        <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')} disabled={!open}>
-          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-            <SupervisorAccountIcon />
-            Admin
-          </AccordionSummary>
-          <AccordionDetails>
-            <NavLink exact to="/lista-de-usuario">
-              Usuários
-            </NavLink>
-            <NavLink exact to="/cadastro-de-usuario">
-              Cadastro de Usuário
-            </NavLink>
-          </AccordionDetails>
-        </Accordion>
+        {user && user[0]?.type === "admin" ? (
+          <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')} disabled={!open}>
+            <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+              <SupervisorAccountIcon />
+              Admin
+            </AccordionSummary>
+            <AccordionDetails>
+              <NavLink exact to="/lista-de-usuario">
+                Usuários
+              </NavLink>
+              <NavLink exact to="/cadastro-de-usuario">
+                Cadastro de Usuário
+              </NavLink>
+            </AccordionDetails>
+          </Accordion>
+        ) : null}
         <Exit className={ open ? "opened" : ""} onClick={() => logout()} >
           <img src={ ExitIcon } width={ 18 } height={ 16 } alt="" />
           Sair

@@ -91,7 +91,17 @@ function Login() {
       const data = {
         email
       }
-      // axios.get(`https://app-esco.mageda.com.br/api/user/recover-password`)
+      axios.post(`https://app-esco.mageda.com.br/api/user/recover-password/email`, data)
+      .then(response => {
+        toast.info('Foi enviado um e-mail para recuperar sua senha.', {
+          autoClose: 5000
+        })
+      })
+      .catch(error => {
+        toast.info('Erro ao se conectar com o servidor! Verifique sua internet.', {
+          autoClose: 5000
+        })
+      })
     }
   }
 
@@ -266,7 +276,7 @@ const LoginCard = styled.div`
     input {
       padding: 16px 24px;
       background-color: rgba(176,176,176,0.1);
-      color: #B0B0B0;
+      color: #333;
       border-radius: 3px;
       border: none;
     }
