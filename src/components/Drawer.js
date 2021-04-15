@@ -81,6 +81,8 @@ const Drawer = (props) => {
       <Hamburger className={ open ? "opened" : "" } onClick={ () => setOpen(!open)} >
         <div className="dashs">
           <span></span>
+          <span></span>
+          <span></span>
         </div>
         <div className="logo">
           <img src={ LogoBranco } alt="Esco" width={87} height={16} />
@@ -195,6 +197,7 @@ const Hamburger = styled.div`
     left: 0;
     top: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 72px;
@@ -208,26 +211,41 @@ const Hamburger = styled.div`
       height: 4px;
       background: #fff;
       border-radius: 16px;
+      transition: opacity 0.4s, transform 0.4s, top 0.4s, bottom 0.4s;
 
-      &:before {
-        content: '';
+      &:first-child {
         width: 38px;
         height: 4px;
         background: #fff;
         border-radius: 16px;
-        position: absolute;
-        top: -12px;
+        top: -10px;
         left: 0;
       }
-      &:after {
-        content: '';
+      &:last-child {
         width: 38px;
         height: 4px;
         background: #fff;
         border-radius: 16px;
-        position: absolute;
-        bottom: -12px;
+        bottom: -10px;
         left: 0;
+      }
+    }
+
+  }
+  &.opened {
+    .dashs {
+      span {
+        &:first-child {
+          top: 4px;
+          transform: rotate(45deg);
+        }
+        &:nth-child(2) {
+          opacity: 0;
+        }
+        &:last-child {
+          bottom: 4px;
+          transform: rotate(-45deg);
+        }
       }
     }
   }
