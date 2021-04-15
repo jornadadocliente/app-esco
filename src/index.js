@@ -35,7 +35,7 @@ ReactDOM.render(
         <Route path="/novo-orcamento" exact={true} component={NovoOrcamento} />
         
         {/* Rotas de produtos dinâmicas */}
-        <Route path="/produtos/:search" component={Produtos} />
+        <Route path="/produtos/" component={Produtos} />
 
         {/* Rota de Produto */}
         <Route path="/produto/:id" exact={true} component={ProdutoUnico} />

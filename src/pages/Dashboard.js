@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
@@ -34,6 +34,7 @@ const CssTextField = withStyles({
 
 function Dashboard() {
 
+  const history = useHistory()
   const [values, setValues] = useState({
     search_input: null
   })
@@ -50,6 +51,14 @@ function Dashboard() {
     });
   };
 
+  const handleSearch = (event) => {
+    event.preventDefault()
+    const search = values.search_input
+    if (search) {
+      history.push(`/produtos/?search=${search}`)
+    }
+  }
+
   return (
     <div className="row">
       <Drawer />
@@ -59,20 +68,22 @@ function Dashboard() {
       <Container className="container">
         <h1>O que você procura?</h1>
         <Filters>
-          <CssTextField 
-            placeholder="Digite aqui o nome do Produto ou Aplicação" 
-            variant="filled"
-            name="search_input"
-            value={values.search_input}
-            onChange={handleChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <form onSubmit={ handleSearch }>
+            <CssTextField 
+              placeholder="Digite aqui o nome do Produto ou Aplicação" 
+              variant="filled"
+              name="search_input"
+              value={values.search_input}
+              onChange={handleChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </form>
           
           <FilterAdvanced />
         </Filters>
@@ -80,7 +91,7 @@ function Dashboard() {
         <div className="row">
           {categories?.map(item => (
             <Categories>
-              <Link to={`/produtos/${item.title}`}>
+              <Link to={`/produtos/?category=${item.title}`}>
                 <img src={ item.image } alt={item.title} />
                 <h3>{ item.title }</h3>
                 <button>
@@ -127,8 +138,11 @@ const Filters = styled.div`
   display: flex;
   align-items: center;
 
-  .MuiFormControl-root {
+  form {
     width: calc(100% - 180px);
+  }
+  .MuiFormControl-root {
+    width: 100%;
     border-radius: 10px;
 
     .MuiInputBase-root {

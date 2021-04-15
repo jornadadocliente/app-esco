@@ -131,13 +131,17 @@ function Produto() {
               <SuccessCase>
                 <div className="col-md-6">
                   <h2>{ item.title }</h2>
-                  <p>{ item.description }</p>
-                  <p><strong>Resultado</strong></p>
-                  <ul>
-                    {item.results.map(result_item => {
-                      return <li dangerouslySetInnerHTML={{ __html: result_item }} />
-                    })}
-                  </ul>
+                  <div dangerouslySetInnerHTML={{ __html: item.description}}></div>
+                  {item.results.length > 0 ? (
+                    <>
+                      <p><strong>Resultado</strong></p>
+                      <ul>
+                        {item.results.map(result_item => {
+                          return <li dangerouslySetInnerHTML={{ __html: result_item }} />
+                        })}
+                      </ul>
+                    </>
+                  ) : null}
                 </div> 
                 <div className="col-md-6">
                   <img src={item.success_image} alt= " " />
@@ -146,32 +150,34 @@ function Produto() {
             )
           })}
 
-          <Staff>
-            <h2>Staff Técnico</h2>
-            <div className="row">
-              {produto?.staffs.map(item => {
-                return (
-                  <div className="col-md-6 item">
-                    <div className="item__profile">
-                      <img src={ item.image } alt=" " />
-                      <div className="item__profile__content">
-                        <strong>{ item.name }</strong>
-                        <p>{ item.occupation }</p>
-                        <p>{ item.occupation_2 }</p>
+          {produto?.staffs.length > 0 ? (
+            <Staff>
+              <h2>Staff Técnico</h2>
+              <div className="row">
+                {produto?.staffs.map(item => {
+                  return (
+                    <div className="col-md-6 item">
+                      <div className="item__profile">
+                        <img src={ item.image } alt=" " />
+                        <div className="item__profile__content">
+                          <strong>{ item.name }</strong>
+                          <p>{ item.occupation }</p>
+                          <p>{ item.occupation_2 }</p>
+                        </div>
+                      </div>
+
+                      <div className="item__text">
+                        <img src={Quote} alt=" " />
+                        <p>
+                          { item.text }
+                        </p>
                       </div>
                     </div>
-
-                    <div className="item__text">
-                      <img src={Quote} alt=" " />
-                      <p>
-                        { item.text }
-                      </p>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </Staff>
+                  )
+                })}
+              </div>
+            </Staff>
+          ) : null}
 
           <AnchorLink>
             <HashLink to={`/produto/${id}#solicitar-orcamento`}>

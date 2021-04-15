@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
@@ -12,9 +12,15 @@ import MinaIcon from "../images/mina-icon.svg"
 import EscavadeiraIcon from "../images/escavadeira-icon.svg"
 
 function Produtos() {
-  const { search } = useParams()
+  const location = useLocation()
   const history = useHistory()
+  
+  const params = new URLSearchParams(location.search)
+  const category = params.get("category")
+  const search = params.get("search")
 
+  const searchFor = [category, search]
+  
   const [windowWidth, setWindowWidth] = useState(null)
   const [productsFiltered, setProductsFiltered] = useState(null)
   const [openDetailedProduct, setOpenDetailedProduct] = useState(null)
@@ -31,13 +37,16 @@ function Produtos() {
 
   useEffect(() => {
     const newProducts = products?.filter(item => {
-      return item.category?.title === search
+      if (item.category?.title === category || item.name.toLowerCase().includes(search?.toLowerCase())) {
+        return true
+      }
+      return false
     })
     if (newProducts) {
       setProductsFiltered(newProducts)
       setOpenDetailedProduct(newProducts[0])
     }
-  }, [products, search])
+  }, [products, category, search])
 
   function handleChoiceProduto(event, produtoId) {
     event.preventDefault();
@@ -47,7 +56,6 @@ function Produtos() {
         return item
       }
     })
-    console.log(SelectedProduct[0])
     setOpenDetailedProduct(SelectedProduct[0])
 
     if (windowWidth < 760) {
@@ -64,7 +72,7 @@ function Produtos() {
         <NavTitle>
           <div>
             <h4>Você procurou por:</h4>
-            <h3>{search}</h3>
+            <h3>{searchFor.filter(item => item).join(", ")}</h3>
           </div>
           <div style={{ "position": "relative", "zIndex": 2 }}>
             <FilterAdvanced />

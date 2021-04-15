@@ -106,7 +106,7 @@ const Drawer = (props) => {
           <HomeRoundedIcon />
           Início
         </NavLink>
-        <Accordion square expanded={expanded === 'panel4'} onChange={handleChange('panel4')} disabled={!open}>
+        <Accordion square expanded={expanded === 'panel4'} onChange={handleChange('panel4')} disabled={!open} onClick={ () => setOpen(true)}>
           <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
             <AccountBalanceWalletOutlinedIcon />
             Orçamentos
@@ -120,7 +120,7 @@ const Drawer = (props) => {
             </NavLink>
           </AccordionDetails>
         </Accordion>
-        <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')} disabled={!open}>
+        <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')} disabled={!open} onClick={ () => setOpen(true)}>
           <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
             <LanguageIcon />
             Produtos
@@ -134,7 +134,7 @@ const Drawer = (props) => {
           </AccordionDetails>
         </Accordion>
         {user && user[0]?.type === "admin" ? (
-          <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')} disabled={!open}>
+          <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')} disabled={!open} onClick={ () => setOpen(true)}>
             <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
               <SupervisorAccountIcon />
               Admin
