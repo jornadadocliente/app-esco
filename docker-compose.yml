@@ -2,8 +2,9 @@ version: '3.7'
 services:
   app:
     container_name: esco-front
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '8080:80'
+      - 8080:80

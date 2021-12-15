@@ -12,7 +12,7 @@ RUN yarn install --frozen-lockfile
 RUN yarn build
 
 # production environment
-FROM nginx:1.16.0-alpine
+FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 EXPOSE 80
-CMD [“nginx”, “-g”, “daemon off;”]
+CMD ["nginx", "-g", "daemon off;"]
