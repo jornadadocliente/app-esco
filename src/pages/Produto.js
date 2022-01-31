@@ -14,8 +14,6 @@ import "../../node_modules/video-react/dist/video-react.css"
 import ReasonsIcon from '../images/reasons-icon.svg'
 import Quote from '../images/quote.svg'
 
-import ImageTree from '../images/image-tree.png'
-import FullVideo from '../videos/ESCO® Nemisys® Lip System for Wheel Loaders.mp4'
 import ThumbVideo from '../images/poster_video.png'
 
 function Produto() {
@@ -63,7 +61,9 @@ function Produto() {
           </Principal>
 
           <Benefits>
-            <img src={ produto?.intern.intern_benefits_image } alt=" " />
+            {produto?.intern.intern_benefits_image.length > 0 && (
+              <img src={ produto?.intern.intern_benefits_image } alt=" " />
+            )}
             <div className="row">
               {produto?.intern.intern_benefits.map(item => {
                 return (
@@ -76,21 +76,24 @@ function Produto() {
             </div>
           </Benefits>
 
-          <Tree>
-            <h1>
-              { produto?.title_tree }
-            </h1>
-            <img src={ ImageTree } alt=" " />
-            {/* <img src={ produto?.image_tree } alt=" " /> */}
-          </Tree>
+          {produto?.image_tree.length > 0 && (
+            <Tree>
+              <h1>
+                { produto?.title_tree }
+              </h1>
+              <img src={ produto?.image_tree } alt={produto?.title_tree} />
+            </Tree>
+          )}
 
-          <Video>
-            <Player 
-              playsInline
-              poster={ ThumbVideo }
-              src={ FullVideo }
-            />
-          </Video>
+          {produto?.full_video.length > 0 && (
+            <Video>
+              <Player 
+                playsInline
+                poster={ ThumbVideo }
+                src={ produto?.full_video }
+              />
+            </Video>
+          )}
 
           <Reasons>
             <h2>
@@ -105,26 +108,28 @@ function Produto() {
             </ul>
           </Reasons>
 
-          <Success>
-            <div className="col-md-6">
-              <h2>Cases de Sucesso</h2>
-              <p>
-                {produto?.success_case_description}
-              </p>
-            </div>
-            <div className="col-md-6">
-              <div style={{ 
-                width: 180,
-                height: 180,
-                transform: 'rotate(10deg)',
-                fontSize: '22px',
-                display: 'flex',
-                margin: '0 auto'
-              }}>
-                <SeloDeSucesso />
+          {produto?.success_case_description.length > 0 && (
+            <Success>
+              <div className="col-md-6">
+                <h2>Cases de Sucesso</h2>
+                <p>
+                  {produto?.success_case_description}
+                </p>
               </div>
-            </div>
-          </Success>
+              <div className="col-md-6">
+                <div style={{ 
+                  width: 180,
+                  height: 180,
+                  transform: 'rotate(10deg)',
+                  fontSize: '22px',
+                  display: 'flex',
+                  margin: '0 auto'
+                }}>
+                  <SeloDeSucesso />
+                </div>
+              </div>
+            </Success>
+          )}
 
           {produto?.success_cases.map(item => {
             return (
@@ -146,32 +151,34 @@ function Produto() {
             )
           })}
 
-          <Staff>
-            <h2>Staff Técnico</h2>
-            <div className="row">
-              {produto?.staffs.map(item => {
-                return (
-                  <div className="col-md-6 item">
-                    <div className="item__profile">
-                      <img src={ item.image } alt=" " />
-                      <div className="item__profile__content">
-                        <strong>{ item.name }</strong>
-                        <p>{ item.occupation }</p>
-                        <p>{ item.occupation_2 }</p>
+          {produto?.staffs.length > 0 && (
+            <Staff>
+              <h2>Staff Técnico</h2>
+              <div className="row">
+                {produto?.staffs.map(item => {
+                  return (
+                    <div className="col-md-6 item">
+                      <div className="item__profile">
+                        <img src={ item.image } alt=" " />
+                        <div className="item__profile__content">
+                          <strong>{ item.name }</strong>
+                          <p>{ item.occupation }</p>
+                          <p>{ item.occupation_2 }</p>
+                        </div>
+                      </div>
+
+                      <div className="item__text">
+                        <img src={Quote} alt=" " />
+                        <p>
+                          { item.text }
+                        </p>
                       </div>
                     </div>
-
-                    <div className="item__text">
-                      <img src={Quote} alt=" " />
-                      <p>
-                        { item.text }
-                      </p>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </Staff>
+                  )
+                })}
+              </div>
+            </Staff>
+          )}
 
           <AnchorLink>
             <HashLink to={`/produto/${id}#solicitar-orcamento`}>
@@ -455,7 +462,7 @@ const Benefits = styled.div`
     width: 100%;
     margin: 24px 0;
     height: 500px;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .row {

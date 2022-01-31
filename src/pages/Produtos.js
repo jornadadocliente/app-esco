@@ -92,7 +92,7 @@ function Produtos() {
       <ProdutoContent>
         {openDetailedProduct ? (
           <div className="container">
-            <img src={openDetailedProduct.image} alt="Nemesys" />
+            <img src={openDetailedProduct.image} alt={openDetailedProduct.name} />
             <h2>
               {openDetailedProduct.name}
             </h2>
@@ -192,7 +192,7 @@ const ProdutoContent = styled.div`
   img {
     width: 100%;
     height: 240px;
-    object-fit: contain;
+    object-fit: cover;
   }
 
   h2 {

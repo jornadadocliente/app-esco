@@ -2,8 +2,8 @@ import axios from 'axios';
 import {getToken} from './auth';
 
 const api = axios.create({
-  baseURL:'https://app-esco.mageda.com.br/api'     // Servidor Teste
-  // baseURL:'http://localhost/esco-app-back/public/api'     // Local
+  // baseURL:'https://app-esco.mageda.com.br/api'     // Servidor Teste
+  baseURL:'http://localhost:8000/api'     // Local
 });
 
 api.interceptors.request.use(async config => {
