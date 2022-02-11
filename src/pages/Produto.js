@@ -131,13 +131,13 @@ function Produto() {
             </Success>
           )}
 
-          {produto?.success_cases.map(item => {
+          {produto?.success_cases.length > 0 && produto?.success_cases.map(item => {
             return (
               <SuccessCase>
                 <div className="col-md-6">
                   <h2>{ item.title }</h2>
-                  <p>{ item.description }</p>
-                  <p><strong>Resultado</strong></p>
+                  <p dangerouslySetInnerHTML={{ __html: item.description }} />
+                  {item.results.length > 0 && <p><strong>Resultado</strong></p>}
                   <ul>
                     {item.results.map(result_item => {
                       return <li dangerouslySetInnerHTML={{ __html: result_item }} />
@@ -365,7 +365,7 @@ const Reasons = styled.div`
 
   ul {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap;
     li {
       position: relative;
@@ -460,7 +460,7 @@ const Benefits = styled.div`
 
   img {
     width: 100%;
-    margin: 24px 0;
+    margin: 80px 0 24px;
     height: 500px;
     object-fit: contain;
   }
