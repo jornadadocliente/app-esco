@@ -23,17 +23,29 @@ function Produto() {
   )
 
   const [produto, setProduto] = useState(null)
+  const [productSelected, setProductSelected] = useState(null)
 
   useEffect(() => {
     let produto_selected = null
     // eslint-disable-next-line
     products?.map(item => {
       if (item.id === parseInt(id)) {
+        item.model_one = item.model_one.length > 0 ? JSON.parse(item.model_one) : null
+        item.model_two = item.model_two.length > 0 ? JSON.parse(item.model_two) : null
+        item.model_three = item.model_three.length > 0 ? JSON.parse(item.model_three) : null
+        item.model_four = item.model_four.length > 0 ? JSON.parse(item.model_four) : null
         produto_selected = item
       }
     })
     setProduto(produto_selected)
+    console.log(produto_selected)
   }, [products, id])
+
+  useEffect(() => {
+    if (produto && produto.model_one) {
+      setProductSelected(produto.model_one[0])
+    }
+  }, [produto])
 
   return (
     <div className="row">
@@ -59,6 +71,54 @@ function Produto() {
               </div>
             </div>
           </Principal>
+
+          {productSelected ? (
+            <Models>
+              <div className="row content">
+                <div className="col-md-6 content__image">
+                  <img src={productSelected.model_picture} alt={productSelected.model_title} />
+                </div>
+                <div className="col-md-6">
+                  <h1 className="content__subtitle">
+                    CONHEÇA NOSSOS MODELOS
+                  </h1>
+                  <h1 className="content__title">
+                    {productSelected.model_title}
+                  </h1>
+                  <div
+                    className="content__text"
+                    dangerouslySetInnerHTML={{ __html: productSelected.model_description }}>
+                  </div>
+                  <div className="content__thumbs">
+                    {produto?.model_one && (
+                      <div className="content__thumbs--item" onClick={() => setProductSelected(produto?.model_one[0])}>
+                        <img src={produto?.model_one[0].model_thumb} alt=" " />
+                        <p>{produto?.model_one[0].model_title.replace('Básculas ESCO', '')}</p>
+                      </div>
+                    )}
+                    {produto?.model_two && (
+                      <div className="content__thumbs--item" onClick={() => setProductSelected(produto?.model_two[0])}>
+                        <img src={produto?.model_two[0].model_thumb} alt=" " />
+                        <p>{produto?.model_two[0].model_title.replace('Básculas ESCO', '')}</p>
+                      </div>
+                    )}
+                    {produto?.model_three && (
+                      <div className="content__thumbs--item" onClick={() => setProductSelected(produto?.model_three[0])}>
+                        <img src={produto?.model_three[0].model_thumb} alt=" " />
+                        <p>{produto?.model_three[0].model_title.replace('Básculas ESCO', '')}</p>
+                      </div>
+                    )}
+                    {produto?.model_four && (
+                      <div className="content__thumbs--item" onClick={() => setProductSelected(produto?.model_four[0])}>
+                        <img src={produto?.model_four[0].model_thumb} alt=" " />
+                        <p>{produto?.model_four[0].model_title.replace('Básculas ESCO', '')}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Models>
+          ) : null}
 
           <Benefits>
             {produto?.intern.intern_benefits_image.length > 0 && (
@@ -194,6 +254,73 @@ function Produto() {
   );
 }
 
+const Models = styled.div`
+  padding: 50px 0;
+  display: flex;
+
+  .content {
+    .col-md-6 {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__image {
+      img {
+        width: 100%;
+      }
+    }
+
+    &__title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    &__subtitle {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #043455;
+    }
+
+    &__text {
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #000;
+      line-height: 1.5;
+    }
+
+    &__thumbs {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 16px 0;
+      margin-top: auto;
+      &--item {
+        width: 25%;
+        text-align: center;
+        margin: 0 8px;
+        cursor: pointer;
+        img {
+          width: 100%;
+          border-radius: 8px;
+          background-color: rgba(124, 140, 166, 0.3);
+          padding: 16px 0;
+        }
+
+      }
+      @media screen and (max-width: 820px) {
+        flex-wrap: wrap;
+        &--item {
+          width: calc(50% - 16px);
+        }
+      }
+    }
+  }
+`
+
 const AnchorLink = styled.div`
   position: sticky;
   bottom: 15px;
@@ -260,7 +387,7 @@ const Staff = styled.div`
     }
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     padding: 40px 15px 80px;
   }
 `
@@ -299,7 +426,7 @@ const SuccessCase = styled.div`
     }
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     flex-direction: column-reverse;
     padding: 40px 15px 80px;
 
@@ -333,11 +460,11 @@ const Success = styled.div`
     line-height: 28px;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     padding: 80px 15px;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     flex-wrap: wrap;
     overflow: hidden;
     padding-top: 160px;
@@ -400,7 +527,7 @@ const Reasons = styled.div`
     z-index: -2;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     padding: 80px 15px;
   }
 
@@ -429,7 +556,7 @@ const Video = styled.div`
     border-radius: 10px;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     padding: 0 15px;
   }
 `
@@ -449,7 +576,7 @@ const Tree = styled.div`
     z-index: 2;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     padding: 0 15px;
   }
 `
@@ -483,7 +610,7 @@ const Benefits = styled.div`
     }
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     padding: 0 15px;
   }
 
@@ -561,7 +688,7 @@ const Principal = styled.div`
     }
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     flex-wrap: wrap;
     flex-direction: column-reverse;
     padding: 0;
@@ -598,7 +725,7 @@ const Container = styled.div`
   width: calc(100% - 250px);
   margin: 0 auto;
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     width: calc(100% - 72px);
     max-width: calc(100% - 72px);
     margin-left: auto;
