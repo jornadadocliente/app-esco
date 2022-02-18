@@ -62,7 +62,9 @@ function Produto() {
                 </p>
                 <h1>{produto?.name}</h1>
                 <h5>{produto?.intern.intern_subtitle}</h5>
-                <p>{produto?.intern.intern_description}</p>
+                {produto?.intern.intern_description.includes('</p>') ? (
+                  <div dangerouslySetInnerHTML={{ __html: produto?.intern.intern_description }} />
+                ) : <p>{produto?.intern.intern_description}</p>}
               </div>
             </div>
             <div className="col-md-6">
@@ -149,7 +151,7 @@ function Produto() {
             <Video>
               <Player 
                 playsInline
-                poster={ ThumbVideo }
+                poster={ produto?.thumbnail_video.length > 0 ? produto?.thumbnail_video : ThumbVideo }
                 src={ produto?.full_video }
               />
             </Video>
@@ -161,9 +163,17 @@ function Produto() {
             </h2>
             <ul>
               {produto?.reasons.map(item => {
-                return (
-                  <li>{item}</li>
-                )
+                if (item.includes('</')) {
+                  return (
+                    <li className='code__html'>
+                      <div dangerouslySetInnerHTML={{ __html: item }} />
+                    </li>
+                  )
+                } else {
+                  return (
+                    <li>{item}</li>
+                  )
+                }
               })}
             </ul>
           </Reasons>
@@ -490,11 +500,11 @@ const Reasons = styled.div`
     margin: 24px 0;
   }
 
-  ul {
+  > ul {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    li {
+    > li {
       position: relative;
       margin: 24px 0 24px 60px;
       width: calc(40% - 60px);
@@ -512,6 +522,19 @@ const Reasons = styled.div`
         background-repeat: no-repeat;
         width: 40px;
         height: 40px;
+      }
+      &.code__html {
+        p {
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 16px;
+        }
+        ul {
+          padding-left: 20px;
+          li {
+            margin-bottom: 8px;
+          }
+        }
       }
     }
   }
@@ -675,6 +698,13 @@ const Principal = styled.div`
       font-size: 16px;
       font-weight: bold;
       color: #000;
+    }
+
+    ul {
+      padding-left: 40px;
+      li {
+        line-height: 1.5;
+      }
     }
   }
 
