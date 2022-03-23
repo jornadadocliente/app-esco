@@ -1,75 +1,81 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import styled from 'styled-components'
-import Drawer from '../components/Drawer'
-import Header from '../components/Header'
-import FormOrcamento from '../components/FormOrcamento'
-import db from '../database'
-import { useLiveQuery } from 'dexie-react-hooks'
-import SeloDeSucesso from '../components/SeloDeSucesso'
-import { HashLink } from 'react-router-hash-link';
-import { Player } from 'video-react'
-import "../../node_modules/video-react/dist/video-react.css"
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import Drawer from "../components/Drawer";
+import Header from "../components/Header";
+import FormOrcamento from "../components/FormOrcamento";
+import db from "../database";
+import { useLiveQuery } from "dexie-react-hooks";
+import SeloDeSucesso from "../components/SeloDeSucesso";
+import { HashLink } from "react-router-hash-link";
+import { Player } from "video-react";
+import "../../node_modules/video-react/dist/video-react.css";
 
-import ReasonsIcon from '../images/reasons-icon.svg'
-import Quote from '../images/quote.svg'
+import ReasonsIcon from "../images/reasons-icon.svg";
+import Quote from "../images/quote.svg";
 
-import ThumbVideo from '../images/poster_video.png'
+import ThumbVideo from "../images/poster_video.png";
 
 function Produto() {
-  const { id } = useParams()
-  const products = useLiveQuery(
-    () => db.products.toArray()
-  )
+  const { id } = useParams();
+  const products = useLiveQuery(() => db.products.toArray());
 
-  const [produto, setProduto] = useState(null)
-  const [productSelected, setProductSelected] = useState(null)
+  const [produto, setProduto] = useState(null);
+  const [productSelected, setProductSelected] = useState(null);
 
   useEffect(() => {
-    let produto_selected = null
+    let produto_selected = null;
     // eslint-disable-next-line
-    products?.map(item => {
+    products?.map((item) => {
       if (item.id === parseInt(id)) {
-        item.model_one = item.model_one.length > 0 ? JSON.parse(item.model_one) : null
-        item.model_two = item.model_two.length > 0 ? JSON.parse(item.model_two) : null
-        item.model_three = item.model_three.length > 0 ? JSON.parse(item.model_three) : null
-        item.model_four = item.model_four.length > 0 ? JSON.parse(item.model_four) : null
-        produto_selected = item
+        item.model_one =
+          item.model_one.length > 0 ? JSON.parse(item.model_one) : null;
+        item.model_two =
+          item.model_two.length > 0 ? JSON.parse(item.model_two) : null;
+        item.model_three =
+          item.model_three.length > 0 ? JSON.parse(item.model_three) : null;
+        item.model_four =
+          item.model_four.length > 0 ? JSON.parse(item.model_four) : null;
+        produto_selected = item;
       }
-    })
-    setProduto(produto_selected)
-    console.log(produto_selected)
-  }, [products, id])
+    });
+    setProduto(produto_selected);
+    console.log(produto_selected);
+  }, [products, id]);
 
   useEffect(() => {
     if (produto && produto.model_one) {
-      setProductSelected(produto.model_one[0])
+      setProductSelected(produto.model_one[0]);
     }
-  }, [produto])
+  }, [produto]);
 
   return (
     <div className="row">
       <Drawer />
       <Header />
-      
+
       <Container>
         <section>
           <Principal>
             <div className="col-md-6">
               <div className="content">
-                <p className="content__title">
-                  {produto?.category.title}
-                </p>
+                <p className="content__title">{produto?.category.title}</p>
                 <h1>{produto?.name}</h1>
                 <h5>{produto?.intern.intern_subtitle}</h5>
-                {produto?.intern.intern_description.includes('</p>') ? (
-                  <div dangerouslySetInnerHTML={{ __html: produto?.intern.intern_description }} />
-                ) : <p>{produto?.intern.intern_description}</p>}
+                {produto?.intern.intern_description.includes("</p>") ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: produto?.intern.intern_description,
+                    }}
+                  />
+                ) : (
+                  <p>{produto?.intern.intern_description}</p>
+                )}
               </div>
             </div>
             <div className="col-md-6">
               <div className="content__image">
-                <img src={ produto?.intern.intern_pricipal_image } alt=" " />
+                <img src={produto?.intern.intern_pricipal_image} alt=" " />
               </div>
             </div>
           </Principal>
@@ -78,42 +84,88 @@ function Produto() {
             <Models>
               <div className="row content">
                 <div className="col-md-6 content__image">
-                  <img src={productSelected.model_picture} alt={productSelected.model_title} />
+                  <img
+                    src={productSelected.model_picture}
+                    alt={productSelected.model_title}
+                  />
                 </div>
                 <div className="col-md-6">
-                  <h1 className="content__subtitle">
-                    CONHEÇA NOSSOS MODELOS
-                  </h1>
+                  <h1 className="content__subtitle">CONHEÇA NOSSOS MODELOS</h1>
                   <h1 className="content__title">
                     {productSelected.model_title}
                   </h1>
                   <div
                     className="content__text"
-                    dangerouslySetInnerHTML={{ __html: productSelected.model_description }}>
-                  </div>
+                    dangerouslySetInnerHTML={{
+                      __html: productSelected.model_description,
+                    }}
+                  ></div>
                   <div className="content__thumbs">
                     {produto?.model_one && (
-                      <div className="content__thumbs--item" onClick={() => setProductSelected(produto?.model_one[0])}>
+                      <div
+                        className="content__thumbs--item"
+                        onClick={() =>
+                          setProductSelected(produto?.model_one[0])
+                        }
+                      >
                         <img src={produto?.model_one[0].model_thumb} alt=" " />
-                        <p>{produto?.model_one[0].model_title.replace('Básculas ESCO', '')}</p>
+                        <p>
+                          {produto?.model_one[0].model_title.replace(
+                            "Básculas ESCO",
+                            ""
+                          )}
+                        </p>
                       </div>
                     )}
                     {produto?.model_two && (
-                      <div className="content__thumbs--item" onClick={() => setProductSelected(produto?.model_two[0])}>
+                      <div
+                        className="content__thumbs--item"
+                        onClick={() =>
+                          setProductSelected(produto?.model_two[0])
+                        }
+                      >
                         <img src={produto?.model_two[0].model_thumb} alt=" " />
-                        <p>{produto?.model_two[0].model_title.replace('Básculas ESCO', '')}</p>
+                        <p>
+                          {produto?.model_two[0].model_title.replace(
+                            "Básculas ESCO",
+                            ""
+                          )}
+                        </p>
                       </div>
                     )}
                     {produto?.model_three && (
-                      <div className="content__thumbs--item" onClick={() => setProductSelected(produto?.model_three[0])}>
-                        <img src={produto?.model_three[0].model_thumb} alt=" " />
-                        <p>{produto?.model_three[0].model_title.replace('Básculas ESCO', '')}</p>
+                      <div
+                        className="content__thumbs--item"
+                        onClick={() =>
+                          setProductSelected(produto?.model_three[0])
+                        }
+                      >
+                        <img
+                          src={produto?.model_three[0].model_thumb}
+                          alt=" "
+                        />
+                        <p>
+                          {produto?.model_three[0].model_title.replace(
+                            "Básculas ESCO",
+                            ""
+                          )}
+                        </p>
                       </div>
                     )}
                     {produto?.model_four && (
-                      <div className="content__thumbs--item" onClick={() => setProductSelected(produto?.model_four[0])}>
+                      <div
+                        className="content__thumbs--item"
+                        onClick={() =>
+                          setProductSelected(produto?.model_four[0])
+                        }
+                      >
                         <img src={produto?.model_four[0].model_thumb} alt=" " />
-                        <p>{produto?.model_four[0].model_title.replace('Básculas ESCO', '')}</p>
+                        <p>
+                          {produto?.model_four[0].model_title.replace(
+                            "Básculas ESCO",
+                            ""
+                          )}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -124,55 +176,56 @@ function Produto() {
 
           <Benefits>
             {produto?.intern.intern_benefits_image.length > 0 && (
-              <img src={ produto?.intern.intern_benefits_image } alt=" " />
+              <img src={produto?.intern.intern_benefits_image} alt=" " />
             )}
             <div className="row">
-              {produto?.intern.intern_benefits.map(item => {
+              {produto?.intern.intern_benefits.map((item) => {
                 return (
                   <div className="item">
-                    <h5>{ item.title }</h5>
-                    <p>{ item.text }</p>
+                    <h5>{item.title}</h5>
+                    <p dangerouslySetInnerHTML={{ __html: item.text }}></p>
                   </div>
-                )
+                );
               })}
             </div>
           </Benefits>
 
-          {produto?.image_tree.length > 0 && (
-            <Tree>
-              <h1>
-                { produto?.title_tree }
-              </h1>
-              <img src={ produto?.image_tree } alt={produto?.title_tree} />
-            </Tree>
-          )}
+          {produto?.image_tree.length > 0 ||
+            produto?.text_image_tree.length >
+              0 ?(
+                <Tree>
+                  <h1>{produto?.title_tree}</h1>
+                  <img src={produto?.image_tree} alt={produto?.title_tree} />
+                  <p>{produto?.text_image_tree}</p>
+                </Tree>
+              ):null}
 
           {produto?.full_video.length > 0 && (
             <Video>
-              <Player 
+              <Player
                 playsInline
-                poster={ produto?.thumbnail_video.length > 0 ? produto?.thumbnail_video : ThumbVideo }
-                src={ produto?.full_video }
+                poster={
+                  produto?.thumbnail_video.length > 0
+                    ? produto?.thumbnail_video
+                    : ThumbVideo
+                }
+                src={produto?.full_video}
               />
             </Video>
           )}
 
           <Reasons>
-            <h2>
-              { produto?.reasons_title }
-            </h2>
+            <h2>{produto?.reasons_title}</h2>
             <ul>
-              {produto?.reasons.map(item => {
-                if (item.includes('</')) {
+              {produto?.reasons.map((item) => {
+                if (item.includes("</")) {
                   return (
-                    <li className='code__html'>
+                    <li className="code__html">
                       <div dangerouslySetInnerHTML={{ __html: item }} />
                     </li>
-                  )
+                  );
                 } else {
-                  return (
-                    <li>{item}</li>
-                  )
+                  return <li>{item}</li>;
                 }
               })}
             </ul>
@@ -182,69 +235,76 @@ function Produto() {
             <Success>
               <div className="col-md-6">
                 <h2>Cases de Sucesso</h2>
-                <p>
-                  {produto?.success_case_description}
-                </p>
+                <p>{produto?.success_case_description}</p>
               </div>
               <div className="col-md-6">
-                <div style={{ 
-                  width: 180,
-                  height: 180,
-                  transform: 'rotate(10deg)',
-                  fontSize: '22px',
-                  display: 'flex',
-                  margin: '0 auto'
-                }}>
+                <div
+                  style={{
+                    width: 180,
+                    height: 180,
+                    transform: "rotate(10deg)",
+                    fontSize: "22px",
+                    display: "flex",
+                    margin: "0 auto",
+                  }}
+                >
                   <SeloDeSucesso />
                 </div>
               </div>
             </Success>
           )}
 
-          {produto?.success_cases.length > 0 && produto?.success_cases.map(item => {
-            return (
-              <SuccessCase>
-                <div className="col-md-6">
-                  <h2>{ item.title }</h2>
-                  <p dangerouslySetInnerHTML={{ __html: item.description }} />
-                  {item.results.length > 0 && <p><strong>Resultado</strong></p>}
-                  <ul>
-                    {item.results.map(result_item => {
-                      return <li dangerouslySetInnerHTML={{ __html: result_item }} />
-                    })}
-                  </ul>
-                </div> 
-                <div className="col-md-6">
-                  <img src={item.success_image} alt= " " />
-                </div>
-              </SuccessCase>
-            )
-          })}
+          {produto?.success_cases.length > 0 &&
+            produto?.success_cases.map((item) => {
+              return (
+                <SuccessCase>
+                  <div className="col-md-6">
+                    <h2>{item.title}</h2>
+                    <p dangerouslySetInnerHTML={{ __html: item.description }} />
+                    {item.results.length > 0 && (
+                      <p>
+                        <strong>Resultado</strong>
+                      </p>
+                    )}
+                    <ul>
+                      {item.results.map((result_item) => {
+                        return (
+                          <li
+                            dangerouslySetInnerHTML={{ __html: result_item }}
+                          />
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  <div className="col-md-6">
+                    <img src={item.success_image} alt=" " />
+                  </div>
+                </SuccessCase>
+              );
+            })}
 
           {produto?.staffs.length > 0 && (
             <Staff>
               <h2>Staff Técnico</h2>
               <div className="row">
-                {produto?.staffs.map(item => {
+                {produto?.staffs.map((item) => {
                   return (
                     <div className="col-md-6 item">
                       <div className="item__profile">
-                        <img src={ item.image } alt=" " />
+                        <img src={item.image} alt=" " />
                         <div className="item__profile__content">
-                          <strong>{ item.name }</strong>
-                          <p>{ item.occupation }</p>
-                          <p>{ item.occupation_2 }</p>
+                          <strong>{item.name}</strong>
+                          <p>{item.occupation}</p>
+                          <p>{item.occupation_2}</p>
                         </div>
                       </div>
 
                       <div className="item__text">
                         <img src={Quote} alt=" " />
-                        <p>
-                          { item.text }
-                        </p>
+                        <p>{item.text}</p>
                       </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </Staff>
@@ -257,9 +317,12 @@ function Produto() {
           </AnchorLink>
         </section>
 
-        <FormOrcamento id="solicitar-orcamento" produtoId={produto?.id} produto={ produto ? produto : null } />
+        <FormOrcamento
+          id="solicitar-orcamento"
+          produtoId={produto?.id}
+          produto={produto ? produto : null}
+        />
       </Container>
-
     </div>
   );
 }
@@ -319,7 +382,6 @@ const Models = styled.div`
           background-color: rgba(124, 140, 166, 0.3);
           padding: 16px 0;
         }
-
       }
       @media screen and (max-width: 820px) {
         flex-wrap: wrap;
@@ -329,7 +391,7 @@ const Models = styled.div`
       }
     }
   }
-`
+`;
 
 const AnchorLink = styled.div`
   position: sticky;
@@ -342,12 +404,12 @@ const AnchorLink = styled.div`
   a {
     padding: 16px 24px;
     border-radius: 4px;
-    background: #BC080D;
+    background: #bc080d;
     box-shadow: 0px 10px 60px rgba(124, 140, 166, 0.25);
-    color: #FFF;
+    color: #fff;
     text-decoration: none;
   }
-`
+`;
 
 const Staff = styled.div`
   padding: 40px 0 80px;
@@ -360,7 +422,7 @@ const Staff = styled.div`
 
   .item {
     padding: 15px;
-    
+
     &__profile {
       display: flex;
       align-items: center;
@@ -388,7 +450,7 @@ const Staff = styled.div`
         width: 30px;
         height: 30px;
         margin-right: 8px;
-        color: #BC080D;
+        color: #bc080d;
       }
       p {
         line-height: 32px;
@@ -400,7 +462,7 @@ const Staff = styled.div`
   @media screen and (max-width: 820px) {
     padding: 40px 15px 80px;
   }
-`
+`;
 
 const SuccessCase = styled.div`
   display: flex;
@@ -428,7 +490,7 @@ const SuccessCase = styled.div`
     li {
       margin-left: 20px;
       &::marker {
-        color: #BC080D;
+        color: #bc080d;
       }
       p {
         margin: 0;
@@ -454,13 +516,13 @@ const SuccessCase = styled.div`
       }
     }
   }
-`
+`;
 
 const Success = styled.div`
   display: flex;
   color: #043455;
   padding: 80px 0;
-  
+
   h2 {
     font-size: 20px;
     margin: 24px 0;
@@ -488,7 +550,7 @@ const Success = styled.div`
       }
     }
   }
-`
+`;
 
 const Reasons = styled.div`
   position: relative;
@@ -496,7 +558,7 @@ const Reasons = styled.div`
 
   h2 {
     font-size: 32px;
-    color: #BC080D;
+    color: #bc080d;
     margin: 24px 0;
   }
 
@@ -538,9 +600,9 @@ const Reasons = styled.div`
       }
     }
   }
-  
+
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: -50vw;
@@ -558,14 +620,14 @@ const Reasons = styled.div`
     h2 {
       font-size: 28px;
     }
-    
+
     ul {
       li {
         width: 100%;
       }
     }
   }
-`
+`;
 
 const Video = styled.div`
   display: flex;
@@ -582,7 +644,7 @@ const Video = styled.div`
   @media screen and (max-width: 820px) {
     padding: 0 15px;
   }
-`
+`;
 
 const Tree = styled.div`
   display: flex;
@@ -602,7 +664,7 @@ const Tree = styled.div`
   @media screen and (max-width: 820px) {
     padding: 0 15px;
   }
-`
+`;
 
 const Benefits = styled.div`
   display: flex;
@@ -647,7 +709,7 @@ const Benefits = styled.div`
       }
     }
   }
-`
+`;
 
 const Principal = styled.div`
   display: flex;
@@ -749,7 +811,7 @@ const Principal = styled.div`
       }
     }
   }
-`
+`;
 
 const Container = styled.div`
   width: calc(100% - 250px);
@@ -763,6 +825,6 @@ const Container = styled.div`
     overflow: auto;
     overflow-x: hidden;
   }
-`
+`;
 
 export default Produto;
