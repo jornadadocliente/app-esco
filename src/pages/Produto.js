@@ -175,6 +175,9 @@ function Produto() {
           ) : null}
 
           <Benefits>
+            {produto?.intern.title_benefits.length > 0 && (
+              <h1>{produto?.intern.title_benefits}</h1>
+            )}
             {produto?.intern.intern_benefits_image.length > 0 && (
               <img src={produto?.intern.intern_benefits_image} alt=" " />
             )}
@@ -191,14 +194,19 @@ function Produto() {
           </Benefits>
 
           {produto?.image_tree.length > 0 ||
-            produto?.text_image_tree.length >
-              0 ?(
-                <Tree>
-                  <h1>{produto?.title_tree}</h1>
-                  <img src={produto?.image_tree} alt={produto?.title_tree} />
-                  <p>{produto?.text_image_tree}</p>
-                </Tree>
-              ):null}
+          produto?.text_image_tree.length > 0 ? (
+            <Tree>
+              <h1>{produto?.title_tree}</h1>
+              {produto?.image_tree.length > 0 && (
+                <img src={produto?.image_tree} alt={produto?.title_tree} />
+              )}
+              {produto?.text_image_tree.length > 0 && (
+                <div
+                  dangerouslySetInnerHTML={{ __html: produto?.text_image_tree }}
+                />
+              )}
+            </Tree>
+          ) : null}
 
           {produto?.full_video.length > 0 && (
             <Video>
@@ -657,18 +665,46 @@ const Tree = styled.div`
     max-width: 100%;
     font-size: 24px;
     color: #043455;
-    margin-bottom: -30px;
     z-index: 2;
+  }
+  img {
+    margin-top: -30px;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    line-height: 1.5;
+    .col-md-6 {
+      margin: 8px 0;
+      width: 50%;
+      padding: 0 15px;
+    }
   }
 
   @media screen and (max-width: 820px) {
     padding: 0 15px;
+    .row {
+      .col-md-6 {
+        width: 100%;
+      }
+    }
   }
 `;
 
 const Benefits = styled.div`
   display: flex;
   flex-direction: column;
+
+  h1 {
+    position: relative;
+    width: 400px;
+    max-width: 100%;
+    font-size: 24px;
+    color: #043455;
+    z-index: 2;
+  }
 
   img {
     width: 100%;
