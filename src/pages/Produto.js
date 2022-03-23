@@ -49,6 +49,10 @@ function Produto() {
     }
   }, [produto]);
 
+  function thisIsMyCopy(title, text) {
+    return `<h5>${title}</h5><p>${text}</p>`;
+  }
+
   return (
     <div className="row">
       <Drawer />
@@ -59,8 +63,10 @@ function Produto() {
           <Principal>
             <div className="col-md-6">
               <div className="content">
-                <p className="content__title">{produto?.category.title}</p>
-                <h1>{produto?.name}</h1>
+                {/* <p className="content__title">
+                  {produto?.category.title}
+                </p> */}
+                <h1 className='nameProd'>{produto?.name}</h1>
                 <h5>{produto?.intern.intern_subtitle}</h5>
                 {produto?.intern.intern_description.includes("</p>") ? (
                   <div
@@ -174,56 +180,62 @@ function Produto() {
             </Models>
           ) : null}
 
+          {produto?.intern.title_benefits.length > 0 && (
+            <Titlebenefits>
+              <h1>
+                {produto?.intern.title_benefits}
+              </h1>
+            </Titlebenefits>
+          )}
+
           <Benefits>
-            {produto?.intern.title_benefits.length > 0 && (
-              <h1>{produto?.intern.title_benefits}</h1>
-            )}
             {produto?.intern.intern_benefits_image.length > 0 && (
               <img src={produto?.intern.intern_benefits_image} alt=" " />
             )}
             <div className="row">
               {produto?.intern.intern_benefits.map((item) => {
                 return (
-                  <div className="item">
-                    <h5>{item.title}</h5>
-                    <p dangerouslySetInnerHTML={{ __html: item.text }}></p>
+                  <div className="item" dangerouslySetInnerHTML={{ __html: thisIsMyCopy(item.title, item.text) }}>
+
                   </div>
                 );
               })}
             </div>
           </Benefits>
 
-          {produto?.image_tree.length > 0 ||
-          produto?.text_image_tree.length > 0 ? (
+
+
+
+
+
+          {produto?.title_tree.length > 0 && (
             <Tree>
-              <h1>{produto?.title_tree}</h1>
+              <h1>
+                {produto?.title_tree}
+              </h1>
+              <div dangerouslySetInnerHTML={{ __html: produto?.text_image_tree }}></div>
+
               {produto?.image_tree.length > 0 && (
                 <img src={produto?.image_tree} alt={produto?.title_tree} />
               )}
-              {produto?.text_image_tree.length > 0 && (
-                <div
-                  dangerouslySetInnerHTML={{ __html: produto?.text_image_tree }}
-                />
-              )}
+
             </Tree>
-          ) : null}
+          )}
 
           {produto?.full_video.length > 0 && (
             <Video>
               <Player
                 playsInline
-                poster={
-                  produto?.thumbnail_video.length > 0
-                    ? produto?.thumbnail_video
-                    : ThumbVideo
-                }
+                poster={produto?.thumbnail_video.length > 0 ? produto?.thumbnail_video : ThumbVideo}
                 src={produto?.full_video}
               />
             </Video>
           )}
 
           <Reasons>
-            <h2>{produto?.reasons_title}</h2>
+            <h2>
+              {produto?.reasons_title}
+            </h2>
             <ul>
               {produto?.reasons.map((item) => {
                 if (item.includes("</")) {
@@ -246,50 +258,39 @@ function Produto() {
                 <p>{produto?.success_case_description}</p>
               </div>
               <div className="col-md-6">
-                <div
-                  style={{
-                    width: 180,
-                    height: 180,
-                    transform: "rotate(10deg)",
-                    fontSize: "22px",
-                    display: "flex",
-                    margin: "0 auto",
-                  }}
-                >
+                <div style={{
+                  width: 180,
+                  height: 180,
+                  transform: 'rotate(10deg)',
+                  fontSize: '22px',
+                  display: 'flex',
+                  margin: '0 auto'
+                }}>
                   <SeloDeSucesso />
                 </div>
               </div>
             </Success>
           )}
 
-          {produto?.success_cases.length > 0 &&
-            produto?.success_cases.map((item) => {
-              return (
-                <SuccessCase>
-                  <div className="col-md-6">
-                    <h2>{item.title}</h2>
-                    <p dangerouslySetInnerHTML={{ __html: item.description }} />
-                    {item.results.length > 0 && (
-                      <p>
-                        <strong>Resultado</strong>
-                      </p>
-                    )}
-                    <ul>
-                      {item.results.map((result_item) => {
-                        return (
-                          <li
-                            dangerouslySetInnerHTML={{ __html: result_item }}
-                          />
-                        );
-                      })}
-                    </ul>
-                  </div>
-                  <div className="col-md-6">
-                    <img src={item.success_image} alt=" " />
-                  </div>
-                </SuccessCase>
-              );
-            })}
+          {produto?.success_cases.length > 0 && produto?.success_cases.map(item => {
+            return (
+              <SuccessCase>
+                <div className="col-md-6">
+                  <h2>{item.title}</h2>
+                  <p dangerouslySetInnerHTML={{ __html: item.description }} />
+                  {item.results.length > 0 && <p><strong>Resultado</strong></p>}
+                  <ul>
+                    {item.results.map(result_item => {
+                      return <li dangerouslySetInnerHTML={{ __html: result_item }} />
+                    })}
+                  </ul>
+                </div>
+                <div className="col-md-6">
+                  <img src={item.success_image} alt=" " />
+                </div>
+              </SuccessCase>
+            )
+          })}
 
           {produto?.staffs.length > 0 && (
             <Staff>
@@ -309,7 +310,9 @@ function Produto() {
 
                       <div className="item__text">
                         <img src={Quote} alt=" " />
-                        <p>{item.text}</p>
+                        <p>
+                          {item.text}
+                        </p>
                       </div>
                     </div>
                   );
@@ -325,11 +328,7 @@ function Produto() {
           </AnchorLink>
         </section>
 
-        <FormOrcamento
-          id="solicitar-orcamento"
-          produtoId={produto?.id}
-          produto={produto ? produto : null}
-        />
+        <FormOrcamento id="solicitar-orcamento" produtoId={produto?.id} produto={produto ? produto : null} />
       </Container>
     </div>
   );
@@ -338,7 +337,14 @@ function Produto() {
 const Models = styled.div`
   padding: 50px 0;
   display: flex;
-
+  .nameProd{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: #222222;
+  }
   .content {
     .col-md-6 {
       padding: 0 16px;
@@ -430,7 +436,15 @@ const Staff = styled.div`
 
   .item {
     padding: 15px;
+<<<<<<< HEAD
+    
+    ul{
+      padding-left: 18px;
+    }
+    
+=======
 
+>>>>>>> 35672b848ae16371c5d492df6e8118b506ef511f
     &__profile {
       display: flex;
       align-items: center;
@@ -654,19 +668,74 @@ const Video = styled.div`
   }
 `;
 
+
+
+const Titlebenefits = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 40px 0;
+  .col-md-6{
+    margin-top: 5%;
+  }
+  ul{
+    margin-left: 12%;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+
+    color: #383838;
+  }
+  h1 {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+
+    display: flex;
+    align-items: center;
+
+    color: #043455;
+  }
+  p{
+    font-weight: 500;
+    line-height: 28px;
+  }
+
+  @media screen and (max-width: 820px) {
+    padding: 0 15px;
+  }
+`
+
 const Tree = styled.div`
   display: flex;
   flex-direction: column;
   margin: 40px 0;
+  .col-md-6{
+    margin-top: 5%;
+  }
+  ul{
+    margin-left: 12%;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
 
+    color: #383838;
+  }
   h1 {
     position: relative;
-    width: 300px;
     max-width: 100%;
     font-size: 24px;
     color: #043455;
     z-index: 2;
   }
+<<<<<<< HEAD
+  p{
+    font-weight: 500;
+    line-height: 28px;
+=======
   img {
     margin-top: -30px;
   }
@@ -681,6 +750,7 @@ const Tree = styled.div`
       width: 50%;
       padding: 0 15px;
     }
+>>>>>>> 35672b848ae16371c5d492df6e8118b506ef511f
   }
 
   @media screen and (max-width: 820px) {
@@ -729,6 +799,9 @@ const Benefits = styled.div`
     p {
       color: #000;
     }
+    ul{
+      padding-left:18px;
+    }
   }
 
   @media screen and (max-width: 820px) {
@@ -749,7 +822,7 @@ const Benefits = styled.div`
 
 const Principal = styled.div`
   display: flex;
-  margin: 72px auto 0;
+  margin: 8px auto 0;
   padding: 60px 0;
   .content {
     display: flex;
@@ -787,9 +860,11 @@ const Principal = styled.div`
 
     h1 {
       margin: 24px 0;
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 700;
       font-size: 24px;
-      color: #222222;
-      font-weight: bold;
+      line-height: 29px;
     }
 
     h5 {
@@ -799,7 +874,7 @@ const Principal = styled.div`
     }
 
     ul {
-      padding-left: 40px;
+      padding-left: 40px !important;
       li {
         line-height: 1.5;
       }
