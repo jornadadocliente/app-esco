@@ -650,6 +650,11 @@ const Reasons = styled.div`
 const Video = styled.div`
 
 .video-react .video-react-big-play-button{
+    top: 50%;
+    left: 50%;
+}
+
+.video-react .video-react-big-play-button{
   top: 50%;
     left: 50%;
 }
