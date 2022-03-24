@@ -835,10 +835,10 @@ const Principal = styled.div`
       img {
         position: absolute;
         top: 72px;
-        right: 0;
-        width: 540px;
+        right: 0px;
+        width: 50%;
         height: 540px;
-        object-fit: cover;
+        object-fit: unset;
         border-radius: 0px 0px 0px 25px;
       }
     }
