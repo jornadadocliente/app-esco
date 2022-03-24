@@ -66,6 +66,24 @@ function Produtos() {
             <h4>Você procurou por:</h4>
             <h3>{search}</h3>
           </div>
+           {/* <div className="row">
+              <div>
+                <h6>Tipo de Máquina:</h6>
+                <div>
+                  <img src={EscavadeiraIcon} alt="" />
+                  <img src={openDetailedProduct.detailed.machine_type.icon} alt="" />
+                </div>
+                <p>{openDetailedProduct.detailed.machine_type.name}</p>
+              </div>
+              <div>
+                <h6>Aplicação:</h6>
+                <div>
+                  <img src={MinaIcon} alt="" />
+                  <img src={openDetailedProduct.detailed.application.icon} alt="" />
+                </div>
+                <p>{openDetailedProduct.detailed.application.name}</p>
+              </div>
+            </div> */}
           <div style={{ "position": "relative", "zIndex": 2 }}>
             <FilterAdvanced />
           </div>
