@@ -436,15 +436,11 @@ const Staff = styled.div`
 
   .item {
     padding: 15px;
-<<<<<<< HEAD
     
     ul{
       padding-left: 18px;
     }
     
-=======
-
->>>>>>> 35672b848ae16371c5d492df6e8118b506ef511f
     &__profile {
       display: flex;
       align-items: center;
@@ -652,6 +648,12 @@ const Reasons = styled.div`
 `;
 
 const Video = styled.div`
+
+.video-react .video-react-big-play-button{
+  top: 50%;
+    left: 50%;
+}
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -731,11 +733,6 @@ const Tree = styled.div`
     color: #043455;
     z-index: 2;
   }
-<<<<<<< HEAD
-  p{
-    font-weight: 500;
-    line-height: 28px;
-=======
   img {
     margin-top: -30px;
   }
@@ -750,7 +747,6 @@ const Tree = styled.div`
       width: 50%;
       padding: 0 15px;
     }
->>>>>>> 35672b848ae16371c5d492df6e8118b506ef511f
   }
 
   @media screen and (max-width: 820px) {
@@ -835,10 +831,10 @@ const Principal = styled.div`
       img {
         position: absolute;
         top: 72px;
-        right: 0px;
-        width: 50%;
+        right: 0;
+        width: 540px;
         height: 540px;
-        object-fit: unset;
+        object-fit: cover;
         border-radius: 0px 0px 0px 25px;
       }
     }
