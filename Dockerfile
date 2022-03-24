@@ -6,7 +6,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY . /app
 COPY package.json /app/package.json
-COPY yarn.lock /app/yarn.lock
+# COPY yarn.lock /app/yarn.lock
 
 RUN npm install --legacy-peer-deps
 RUN npm rum buid
